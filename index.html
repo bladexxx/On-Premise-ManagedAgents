@@ -4,87 +4,111 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Open Managed Agents is a self-hosted Managed Agents platform for infrastructure your team operates.">
-  <meta name="theme-color" content="#101923">
-  <title>Open Managed Agents · On-Premise</title>
+  <meta name="theme-color" content="#f4f2ec">
+  <title>Open Managed Agents · Self-hosted Managed Agents</title>
   <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="./" aria-label="Open Managed Agents home"><span class="brand-mark">[∧]</span><span>OPEN MANAGED AGENTS</span></a>
+    <a class="brand" href="./" aria-label="Open Managed Agents home"><span class="brand-mark">OMA</span><span class="brand-name">Open Managed Agents</span></a>
     <nav aria-label="Main navigation">
+      <a href="#architecture">Architecture</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#screenshots">Console</a>
       <a href="docs/user-guide.html">User guide</a>
       <a href="docs/installation.html">Install</a>
       <a href="docs/sdk-reference.html">SDK</a>
-      <a href="#features">Features</a>
-      <a href="#screenshots">Screenshots</a>
       <a href="showcases/index.html">Showcases</a>
-      <a class="nav-cta" href="https://github.com/bladexxx/On-Premise-ManagedAgents/releases">Releases ↗</a>
+      <a class="nav-cta" href="https://github.com/bladexxx/On-Premise-ManagedAgents/releases">Releases <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
 
-  <main>
+  <main id="top">
     <section class="hero">
       <div class="hero-copy">
         <p class="eyebrow">SELF-HOSTED · ON-PREMISE · MANAGED AGENTS</p>
-        <h1>Run your Agents<br><span>on your infrastructure.</span></h1>
-        <p class="lede">OMA brings durable Agent Sessions, controlled tool execution, and an operator Console to environments your team runs.</p>
+        <h1>Run Agents<br>on your infrastructure.</h1>
+        <p class="lede">OMA gives teams a durable control plane for Agent Sessions, governed tools, and isolated execution in environments they operate.</p>
         <div class="actions">
-          <a class="button primary" href="https://github.com/bladexxx/On-Premise-ManagedAgents/releases">Explore releases <span>↗</span></a>
+          <a class="button primary" href="https://github.com/bladexxx/On-Premise-ManagedAgents/releases">Explore releases <span aria-hidden="true">↗</span></a>
           <a class="button secondary" href="docs/installation.html">Read the install guide</a>
         </div>
         <p class="release-note">Public distribution repository · Application source code is not included here.</p>
       </div>
-      <div class="hero-art" aria-label="Agent execution architecture overview">
-        <div class="art-label">ONE REQUEST · A COMPLETE EXECUTION STORY</div>
-        <div class="flow-card"><span>01</span><strong>Console / API</strong><small>Submit work</small></div>
-        <div class="flow-line"></div>
-        <div class="flow-card"><span>02</span><strong>Durable Session</strong><small>Persist every event</small></div>
-        <div class="flow-line"></div>
-        <div class="flow-card highlight"><span>03</span><strong>Harness + tools</strong><small>Choose how the Agent works</small></div>
-        <div class="flow-line"></div>
-        <div class="flow-card"><span>04</span><strong>Isolated runtime</strong><small>Run inside your boundary</small></div>
-        <div class="art-foot">SQLite or PostgreSQL · configurable model provider · on-premise execution</div>
+      <div class="hero-visual" aria-label="An Agent request flows through an OMA Session, Harness, and isolated runtime">
+        <div class="visual-head"><span>ONE REQUEST · A COMPLETE EXECUTION STORY</span><span class="live-pill"><i></i> SELF-HOSTED</span></div>
+        <div class="request-line"><span class="request-dot"></span><span>Agent request</span><span class="request-rule"></span><b>OMA</b></div>
+        <div class="hero-flow">
+          <article class="flow-node"><span class="node-kicker">01 · CONTROL</span><strong>Durable Session</strong><p>History, policy, recovery</p><div class="node-foot">Append-only event stream</div></article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article class="flow-node brain-node"><span class="node-kicker">02 · BRAIN</span><strong>Choose a Harness</strong><p>Default OMA · Strands · DeepAgents</p><div class="node-foot">Pi Harness in development</div></article>
+          <div class="flow-arrow" aria-hidden="true">→</div>
+          <article class="flow-node hands-node"><span class="node-kicker">03 · HANDS</span><strong>Managed execution</strong><p>Governed tools · isolated sandbox</p><div class="node-foot">OpenSandbox · OpenShell</div></article>
+        </div>
+        <div class="visual-foot"><span>MODEL PROVIDER</span><span>SESSION BOUNDARY</span><span>YOUR INFRASTRUCTURE</span></div>
       </div>
     </section>
 
-    <section class="capabilities section-wrap" id="features">
-      <div class="section-heading"><p class="eyebrow">PLATFORM CAPABILITIES</p><h2>One control plane. Flexible execution.</h2><p>Keep the Session lifecycle, policy, and evidence together while choosing the Harness and runtime that fit each workload.</p></div>
-      <div class="cap-grid">
-        <article><span class="cap-icon">01</span><h3>Durable Sessions</h3><p>Versioned Agent configurations, concrete Skill bindings, durable event history, streaming, interruption, and recovery.</p></article>
-        <article><span class="cap-icon">02</span><h3>Governed tools</h3><p>Built-in tools such as <code>decide</code>, <code>declare_artifact</code>, and opt-in notifications; MCP servers, GitHub-imported versioned Skills, approvals, and Vault-backed credentials.</p></article>
-        <article><span class="cap-icon">03</span><h3>On-prem execution</h3><p>Operate the control plane and data stores yourself, with selectable isolated sandbox providers.</p></article>
-        <article><span class="cap-icon">04</span><h3>Evaluation and evidence</h3><p>Reusable evaluation plans, controlled runs, retained artifacts, and inspectable outcomes.</p></article>
+    <section class="architecture section-wrap" id="architecture">
+      <div class="section-heading">
+        <p class="eyebrow">OMA’S OPERATING MODEL</p>
+        <h2>Bring your own brain.<br><span>Keep the hands under your control.</span></h2>
+        <p>Swap or extend the Agent loop while OMA keeps the Session, platform tools, credentials, and execution boundary under one operator-controlled layer.</p>
       </div>
+      <div class="architecture-map" role="img" aria-label="Harnesses provide the Agent brain. OMA’s durable Session coordinates it with platform-managed tools, credentials, and isolated runtimes.">
+        <div class="map-column brain-column">
+          <span class="map-label">THE BRAIN · SELECTABLE</span>
+          <h3>Agent Harness</h3>
+          <p>The reasoning and tool-use loop can evolve independently.</p>
+          <ul class="harness-list"><li>Default OMA <b>Available</b></li><li>Strands <b>Available</b></li><li>DeepAgents <b>Available</b></li><li>Pi <b>In development</b></li></ul>
+        </div>
+        <div class="map-link"><span>↔</span><small>events</small></div>
+        <div class="map-column session-column">
+          <span class="map-label">THE BOUNDARY · DURABLE</span>
+          <h3>OMA Session</h3>
+          <p>Versioned Agent snapshot, append-only event log, interruption, and recovery.</p>
+          <div class="session-rail"><span></span><span></span><span></span><span></span><span></span><b>Session event stream</b></div>
+        </div>
+        <div class="map-link"><span>↔</span><small>governed calls</small></div>
+        <div class="map-column hands-column">
+          <span class="map-label">THE HANDS · OMA-MANAGED</span>
+          <h3>Platform + execution</h3>
+          <ul class="hands-list"><li>Built-in tools and MCP</li><li>Approvals and Vault relay</li><li>OpenSandbox / OpenShell</li><li>Artifacts and evidence</li></ul>
+        </div>
+      </div>
+      <div class="architecture-note"><strong>One platform boundary.</strong><span>Harness choice does not give up Session history, permission controls, credential isolation, or runtime choice.</span></div>
     </section>
 
-    <section class="difference section-wrap">
-      <div class="section-heading"><p class="eyebrow">OMA’S OPERATING MODEL</p><h2>Bring your own brain. Keep the hands under your control.</h2><p>OMA separates the Agent’s reasoning loop from the platform services that govern tools, sessions, credentials, and execution. Choose the Harness that fits the work while OMA keeps a durable, inspectable Session boundary.</p></div>
-      <div class="difference-grid">
-        <article class="feature-card feature-lead"><span class="status">CORE ARCHITECTURE</span><h3>A control plane built around the Session</h3><p>Harnesses provide the “brain”; OMA provides the managed “hands”: durable event history, governed tools, identity and permissions, credential relay, sandbox lifecycle, artifacts, and operational evidence.</p></article>
-        <article class="feature-card"><span class="status ready">AVAILABLE</span><h3>Multiple Agent Harnesses</h3><p>Default OMA, Strands, and DeepAgents are available today. The Pi Harness is in development.</p></article>
-        <article class="feature-card"><span class="status ready">SELF-HOSTED</span><h3>Isolated execution</h3><p>Run sandbox work through OpenSandbox or OpenShell. OMA workers support concurrent sandbox operations; capacity is configurable.</p></article>
-        <article class="feature-card"><span class="status planned">IN PROGRESS</span><h3>More runtime choices</h3><p>An E2B adapter exists in source, but is not yet a supported provider in the current on-prem runtime path.</p></article>
+    <section class="capabilities section-wrap" id="capabilities">
+      <div class="section-heading">
+        <p class="eyebrow">BUILT AROUND REAL OPERATIONS</p>
+        <h2>More than Agents and Sessions.</h2>
+        <p>OMA joins Agent creation, business systems, files, recurring work, and evaluation in a self-hosted workspace.</p>
       </div>
-      <div class="harness-strip"><strong>Harnesses</strong><span>Default OMA · Strands · DeepAgents · Pi (in development)</span><strong>On-prem sandbox providers</strong><span>OpenSandbox · OpenShell · E2B (not yet supported in the on-prem runtime path)</span></div>
-    </section>
-
-    <section class="operations section-wrap">
-      <div class="section-heading"><p class="eyebrow">BUILT AROUND REAL OPERATIONS</p><h2>More than Agents and Sessions.</h2><p>OMA connects agent creation, governed work, business systems, generated files, and recurring operations in one self-hosted workspace.</p></div>
-      <div class="operations-grid">
-        <article class="feature-card"><span class="cap-icon">01</span><h3>Business Agent Builder</h3><p>Let people describe the outcome in a conversation. Ask OMA turns requirements into an editable Agent draft, lowering the barrier to creating an Agent while keeping the technical configuration available.</p></article>
-        <article class="feature-card"><span class="cap-icon">02</span><h3>Explore with Ask OMA</h3><p>Ask about workspace capabilities and find relevant Agents, resources, and setup guidance from the Explore page.</p></article>
-        <article class="feature-card"><span class="cap-icon">03</span><h3>Artifacts and Session outputs</h3><p>The <code>declare_artifact</code> built-in tool publishes files created during sandbox execution, or bundles, as Session outputs. The Console can preview, download, and retain selected Artifacts beyond the source Session.</p></article>
-        <article class="feature-card"><span class="cap-icon">04</span><h3>Metabase and Slack</h3><p>Connect Metabase as an MCP data source. Slack Socket Mode supports inbound events through an outbound connection, so the Slack integration does not require a publicly reachable webhook endpoint.</p></article>
-        <article class="feature-card"><span class="cap-icon">05</span><h3>Paperless document workflows</h3><p>Use approved Paperless documents as Session inputs, then publish selected Agent outputs back to Paperless as archived documents.</p></article>
-        <article class="feature-card"><span class="cap-icon">06</span><h3>Schedules and notifications</h3><p>Schedule Agents and configure completion notifications through email, Slack, or Microsoft Teams. The <code>send_notification</code> tool is opt-in and subject to workspace permissions, approvals, and deployment setup.</p></article>
-        <article class="feature-card"><span class="cap-icon">07</span><h3>Evaluation and Temporal</h3><p>Evaluation Plans and Eval Runs provide repeatable checks and evidence. Published Evaluation Plans can use Temporal-backed workflow execution; this integration is experimental. Standard Eval Runs use the main-node Eval Runner.</p></article>
-        <article class="feature-card"><span class="cap-icon">08</span><h3>Governed workspace services</h3><p>Workspace settings cover members and permissions, model/provider configuration, credential vaults, integrations, Applications, Webhooks, and usage visibility.</p></article>
+      <div class="capability-list">
+        <article class="capability-row"><span class="row-number">01</span><div><h3>Build an Agent by describing the work</h3><p>Business Agent Builder uses a conversation to turn goals and requirements into an editable Agent draft, keeping technical settings available for review.</p></div><span class="row-tag">ASK OMA</span></article>
+        <article class="capability-row"><span class="row-number">02</span><div><h3>Explore workspace AI capabilities</h3><p>Ask OMA helps users discover relevant Agents, resources, integrations, and guidance from the Explore page.</p></div><span class="row-tag">WORKSPACE</span></article>
+        <article class="capability-row"><span class="row-number">03</span><div><h3>Give Agents governed ways to act</h3><p>Built-in tools include <code>decide</code>, <code>declare_artifact</code>, and opt-in <code>send_notification</code>. Connect MCP servers, versioned Skills from GitHub, and credentials through Vaults.</p></div><span class="row-tag">TOOLS · MCP · VAULT</span></article>
+        <article class="capability-row"><span class="row-number">04</span><div><h3>Connect the systems teams already use</h3><p>Metabase is available as an MCP integration. Slack Socket Mode receives events over an outbound connection, without requiring a publicly reachable webhook endpoint.</p></div><span class="row-tag">METABASE · SLACK</span></article>
+        <article class="capability-row"><span class="row-number">05</span><div><h3>Move documents and outputs through the workflow</h3><p>Use approved Paperless documents as Session inputs; publish selected Artifacts back to Paperless for archiving. Sandbox-created files can be declared as Session outputs, previewed, downloaded, or retained.</p></div><span class="row-tag">PAPERLESS · ARTIFACTS</span></article>
+        <article class="capability-row"><span class="row-number">06</span><div><h3>Schedule work and notify the right people</h3><p>Agent Scheduler supports recurring runs and configurable email, Slack, or Microsoft Teams notifications, subject to workspace permissions and deployment setup.</p></div><span class="row-tag">SCHEDULER</span></article>
+        <article class="capability-row"><span class="row-number">07</span><div><h3>Evaluate with repeatable evidence</h3><p>Evaluation Plans and Eval Runs support repeatable checks. Published Evaluation Plans can use the experimental Temporal-backed workflow execution path; standard Eval Runs use the main-node Eval Runner.</p></div><span class="row-tag">EVALUATION · EXPERIMENTAL</span></article>
+        <article class="capability-row"><span class="row-number">08</span><div><h3>Operate the workspace as an administrator</h3><p>Manage workspace membership and permissions, Model Cards, integrations, Applications, Webhooks, and usage visibility in the Console.</p></div><span class="row-tag">ADMIN · CONSOLE</span></article>
+      </div>
+      <div class="runtime-band">
+        <div><span class="band-label">HARNESS OPTIONS</span><p>Default OMA <i>·</i> Strands <i>·</i> DeepAgents <i>·</i> Pi in development</p></div>
+        <div><span class="band-label">ON-PREMISE SANDBOXES</span><p>OpenSandbox <i>·</i> OpenShell <i>·</i> E2B adapter in source; on-prem provider support is not yet exposed</p></div>
+        <div><span class="band-label">WORKER CAPACITY</span><p>Concurrent sandbox operations with configurable worker capacity</p></div>
       </div>
     </section>
 
     <section class="video-section section-wrap">
-      <div class="section-heading"><p class="eyebrow">ARCHITECTURE OVERVIEW</p><h2>Follow a request through OMA.</h2><p>See how input, the Session event log, Harness, sandbox work, and live observability fit together.</p></div>
-      <video controls preload="metadata" poster="assets/videos/oma-architecture-overview-poster.png">
+      <div class="section-heading">
+        <p class="eyebrow">ARCHITECTURE OVERVIEW</p>
+        <h2>Follow a request through OMA.</h2>
+        <p>See how the Session event log, Harness, sandbox work, and observability fit together.</p>
+      </div>
+      <video controls playsinline preload="metadata" poster="assets/videos/oma-architecture-overview-poster.jpg" aria-label="OMA architecture overview video with narration">
         <source src="assets/videos/oma-architecture-overview.mp4" type="video/mp4">
         Your browser does not support embedded video. <a href="assets/videos/oma-architecture-overview.mp4">Download the video</a>.
       </video>
@@ -106,7 +130,7 @@
 
     <section class="showcase-callout section-wrap">
       <div><p class="eyebrow">INTERACTIVE SHOWCASES</p><h2>Explore the ideas behind the platform.</h2><p>Open standalone walkthroughs for Harnesses, sandboxes, Session history, credential relay, and Agent versioning.</p></div>
-      <a class="button secondary" href="showcases/index.html">Browse showcases <span>↗</span></a>
+      <a class="button secondary" href="showcases/index.html">Browse showcases <span aria-hidden="true">↗</span></a>
     </section>
 
     <section class="docs-section section-wrap">
@@ -147,6 +171,6 @@
       if (event.target === imageDialog) imageDialog.close();
     });
   </script>
-  <footer class="footer"><a class="brand" href="./"><span class="brand-mark">[∧]</span><span>OPEN MANAGED AGENTS</span></a><span>On-Premise distribution · Documentation, demonstrations, and versioned release assets</span><a href="https://github.com/bladexxx/On-Premise-ManagedAgents">GitHub ↗</a></footer>
+  <footer class="footer"><a class="brand" href="./"><span class="brand-mark">OMA</span><span class="brand-name">Open Managed Agents</span></a><span>On-Premise distribution · Documentation, demonstrations, and versioned release assets</span><a href="https://github.com/bladexxx/On-Premise-ManagedAgents">GitHub ↗</a></footer>
 </body>
 </html>
