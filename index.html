@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Open Managed Agents is a self-hosted Managed Agents platform for infrastructure your team operates.">
+  <meta name="theme-color" content="#101923">
+  <title>Open Managed Agents · On-Premise</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Open Managed Agents home"><span class="brand-mark">[∧]</span><span>OPEN MANAGED AGENTS</span></a>
+    <nav aria-label="Main navigation">
+      <a href="docs/user-guide.html">User guide</a>
+      <a href="docs/installation.html">Install</a>
+      <a href="docs/sdk-reference.html">SDK</a>
+      <a href="showcases/index.html">Showcases</a>
+      <a class="nav-cta" href="https://github.com/bladexxx/On-Premise-ManagedAgents/releases">Releases ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">SELF-HOSTED · ON-PREMISE · MANAGED AGENTS</p>
+        <h1>Run your Agents<br><span>on your infrastructure.</span></h1>
+        <p class="lede">OMA brings durable Agent Sessions, controlled tool execution, and an operator Console to environments your team runs.</p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/bladexxx/On-Premise-ManagedAgents/releases">Explore releases <span>↗</span></a>
+          <a class="button secondary" href="docs/installation.html">Read the install guide</a>
+        </div>
+        <p class="release-note">Public distribution repository · Application source code is not included here.</p>
+      </div>
+      <div class="hero-art" aria-label="Agent execution architecture overview">
+        <div class="art-label">ONE REQUEST · A COMPLETE EXECUTION STORY</div>
+        <div class="flow-card"><span>01</span><strong>Console / API</strong><small>Submit work</small></div>
+        <div class="flow-line"></div>
+        <div class="flow-card"><span>02</span><strong>Durable Session</strong><small>Persist every event</small></div>
+        <div class="flow-line"></div>
+        <div class="flow-card highlight"><span>03</span><strong>Harness + tools</strong><small>Choose how the Agent works</small></div>
+        <div class="flow-line"></div>
+        <div class="flow-card"><span>04</span><strong>Isolated runtime</strong><small>Run inside your boundary</small></div>
+        <div class="art-foot">SQLite or PostgreSQL · configurable model provider · on-premise execution</div>
+      </div>
+    </section>
+
+    <section class="capabilities section-wrap">
+      <div class="section-heading"><p class="eyebrow">PLATFORM CAPABILITIES</p><h2>One control plane. Flexible execution.</h2><p>Keep the Session lifecycle, policy, and evidence together while choosing the Harness and runtime that fit each workload.</p></div>
+      <div class="cap-grid">
+        <article><span class="cap-icon">01</span><h3>Durable Sessions</h3><p>Event history, streaming, interruption, recovery, and a timeline for understanding each run.</p></article>
+        <article><span class="cap-icon">02</span><h3>Governed tools</h3><p>Built-in and custom tools, MCP servers, Skills, approvals, and Vault-backed outbound credentials.</p></article>
+        <article><span class="cap-icon">03</span><h3>On-prem execution</h3><p>Operate the control plane and data stores yourself, with selectable isolated sandbox providers.</p></article>
+        <article><span class="cap-icon">04</span><h3>Evaluation and evidence</h3><p>Reusable evaluation plans, controlled runs, retained artifacts, and inspectable outcomes.</p></article>
+      </div>
+    </section>
+
+    <section class="video-section section-wrap">
+      <div class="section-heading"><p class="eyebrow">ARCHITECTURE OVERVIEW</p><h2>Follow a request through OMA.</h2><p>See how input, the Session event log, Harness, sandbox work, and live observability fit together.</p></div>
+      <video controls preload="metadata" poster="assets/videos/oma-architecture-overview-poster.png">
+        <source src="assets/videos/oma-architecture-overview.mp4" type="video/mp4">
+        Your browser does not support embedded video. <a href="assets/videos/oma-architecture-overview.mp4">Download the video</a>.
+      </video>
+    </section>
+
+    <section class="screens section-wrap">
+      <div class="section-heading"><p class="eyebrow">THE CONSOLE</p><h2>Built for people operating real Agent work.</h2><p>Explore the workspace, review Harness support, inspect sandbox status, and trace outputs from a Session.</p></div>
+      <div class="shot-grid">
+        <figure class="shot shot-wide"><img src="assets/screenshots/workspace-explore.png" alt="Explore workspace capabilities and ask OMA for help"><figcaption><strong>Explore workspace capabilities</strong><span>Find Agents, resources, and guided help.</span></figcaption></figure>
+        <figure class="shot"><img src="assets/screenshots/harness-catalog.png" alt="Harness catalog showing supported execution engines"><figcaption><strong>Harness catalog</strong><span>See available Harnesses and their support status.</span></figcaption></figure>
+        <figure class="shot"><img src="assets/screenshots/sandbox-inventory.png" alt="Sandbox inventory with names and session identifiers blurred"><figcaption><strong>Sandbox operations</strong><span>Review sandbox state and configured providers.</span></figcaption></figure>
+        <figure class="shot"><img src="assets/screenshots/evaluation-plans.png" alt="Reusable evaluation plans with workspace identity blurred"><figcaption><strong>Evaluation plans</strong><span>Define repeatable checks and evidence.</span></figcaption></figure>
+        <figure class="shot"><img src="assets/screenshots/session-timeline.png" alt="Session timeline with personal and session details blurred"><figcaption><strong>Session timeline</strong><span>Trace model calls and tool execution over time.</span></figcaption></figure>
+        <figure class="shot shot-wide"><img src="assets/screenshots/session-artifacts-demo.png" alt="Session artifact preview showing a synthetic distribution control tower"><figcaption><strong>Artifacts and Session outputs</strong><span>Illustrative demo data only; account and Session identifiers are blurred.</span></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="showcase-callout section-wrap">
+      <div><p class="eyebrow">INTERACTIVE SHOWCASES</p><h2>Explore the ideas behind the platform.</h2><p>Open standalone walkthroughs for Harnesses, sandboxes, Session history, credential relay, and Agent versioning.</p></div>
+      <a class="button secondary" href="showcases/index.html">Browse showcases <span>↗</span></a>
+    </section>
+
+    <section class="docs-section section-wrap">
+      <div class="section-heading"><p class="eyebrow">START HERE</p><h2>Documentation for each step.</h2></div>
+      <div class="doc-grid">
+        <a class="doc-card" href="docs/installation.html"><span>01 · OPERATORS</span><strong>Install and upgrade</strong><p>Release bundle, image tags, persistent data, and sandbox worker setup.</p><b>Open install guide ↗</b></a>
+        <a class="doc-card" href="docs/user-guide.html"><span>02 · TEAMS</span><strong>Use the Console and API</strong><p>Set up Workspaces, Agents, Sessions, resources, and evaluations.</p><b>Open user guide ↗</b></a>
+        <a class="doc-card" href="docs/sdk-reference.html"><span>03 · DEVELOPERS</span><strong>Integrate with OMA</strong><p>Authentication, the TypeScript client, native APIs, and event streaming.</p><b>Open SDK reference ↗</b></a>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <p class="eyebrow">SELF-HOSTED MANAGED AGENTS</p><h2>See what is available to install.</h2><p>Versioned bundles and container image references belong to the release they were built for.</p>
+      <a class="button primary" href="https://github.com/bladexxx/On-Premise-ManagedAgents/releases">Go to GitHub Releases ↗</a>
+    </section>
+  </main>
+
+  <footer class="footer"><a class="brand" href="./"><span class="brand-mark">[∧]</span><span>OPEN MANAGED AGENTS</span></a><span>On-Premise distribution · Documentation, demonstrations, and versioned release assets</span><a href="https://github.com/bladexxx/On-Premise-ManagedAgents">GitHub ↗</a></footer>
+</body>
+</html>

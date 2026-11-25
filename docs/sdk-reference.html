@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="OMA On-Prem SDK Reference">
+  <title>OMA SDK Reference</title>
+  <style>
+    :root { --ink:#17242a; --muted:#627078; --paper:#f7f8f5; --panel:#fff; --line:#dfe7e2; --navy:#10323a; --teal:#08716d; --blue:#2563eb; --green:#16784b; --amber:#a15e10; --code:#14272c; --radius:14px; }
+    * { box-sizing:border-box; } html { scroll-behavior:smooth; } body { margin:0; color:var(--ink); background:var(--paper); font:15px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI","Noto Sans SC",sans-serif; }
+    code, pre, .mono { font-family:"JetBrains Mono",Consolas,"Liberation Mono",monospace; } code { padding:.1em .3em; border-radius:4px; background:#edf2ef; } a { color:var(--teal); text-decoration:none; } a:hover { text-decoration:underline; }
+    .shell { display:grid; grid-template-columns:286px minmax(0,1fr); min-height:100vh; } aside { position:sticky; top:0; height:100vh; overflow:auto; padding:28px 18px; color:#d9ebe7; background:var(--navy); }
+    .brand { margin:0 10px 24px; color:#9ed5c7; font-size:11px; font-weight:800; letter-spacing:.13em; text-transform:uppercase; } .brand strong { display:block; margin-top:8px; color:#fff; font:700 28px/1 Georgia,"Noto Serif SC",serif; letter-spacing:-.04em; text-transform:none; }
+    .search { width:100%; padding:10px 12px; border:1px solid #3a5960; border-radius:9px; color:#fff; background:#193e47; outline:0; font:13px inherit; } .search::placeholder { color:#b2c8c4; }
+    .nav-label { margin:20px 10px 6px; color:#90b9b0; font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; } nav a { display:block; padding:7px 10px; border-radius:7px; color:#d4e4e0; font-size:13px; } nav a:hover, nav a.active { color:#fff; background:rgba(255,255,255,.11); text-decoration:none; } nav .sub { margin-left:10px; color:#b9d0cb; font-size:12px; }
+    .hero { padding:60px clamp(28px,6vw,88px) 48px; color:#fff; background:radial-gradient(circle at 84% 0,#2b7974 0,transparent 32%),linear-gradient(120deg,#102f38,#174955); } .eyebrow { color:#a8ddd2; font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; } h1,h2,h3 { line-height:1.18; } h1 { max-width:900px; margin:12px 0 15px; font:700 clamp(40px,5vw,66px)/1.03 Georgia,"Noto Serif SC",serif; letter-spacing:-.05em; } .lead { max-width:830px; margin:0; color:#d7ece7; font-size:18px; } .badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:23px; } .badge { padding:4px 8px; border:1px solid rgba(255,255,255,.25); border-radius:999px; font-size:11px; }
+    main { max-width:1460px; margin:0 auto; padding:38px clamp(22px,5vw,76px) 88px; } section { margin-bottom:58px; scroll-margin-top:24px; } h2 { margin:0 0 12px; color:#173a42; font:700 31px/1.15 Georgia,"Noto Serif SC",serif; letter-spacing:-.035em; } h3 { margin:0 0 8px; color:#173a42; font-size:22px; } .intro { max-width:900px; margin:0; color:var(--muted); font-size:16px; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:21px; } .card { padding:18px; border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:0 8px 22px rgba(17,35,40,.035); } .card h3 { font-size:18px; } .card p { margin:0; color:var(--muted); font-size:13px; }
+    .status { display:inline-block; margin-bottom:9px; padding:3px 7px; border-radius:5px; font-size:10px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; } .ready { color:var(--green); background:#e7f8ef; } .partial { color:var(--amber); background:#fff3d9; } .native { color:#5b4aa1; background:#f0edff; }
+    .notice { margin:22px 0; padding:15px 17px; border-left:4px solid var(--teal); border-radius:0 10px 10px 0; background:#e8f5f1; } .notice.warn { border-color:var(--amber); background:#fff4dd; } .notice strong { display:block; margin-bottom:2px; }
+    .operation { display:grid; grid-template-columns:minmax(330px,1fr) minmax(370px,1fr); gap:24px; margin-top:28px; padding:25px; border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:0 9px 25px rgba(17,35,40,.035); } .signature { margin:10px 0; color:#35464d; font-size:13px; } .endpoint { display:inline-flex; gap:8px; padding:5px 8px; border-radius:6px; background:#f0f3f1; color:#3e4c50; font-size:12px; } .method { color:var(--blue); font-weight:800; }
+    .params { margin-top:19px; border-top:1px solid var(--line); } .param { padding:12px 0; border-bottom:1px solid var(--line); } .param b { font-family:"JetBrains Mono",Consolas,monospace; font-size:13px; } .type { margin-left:6px; color:#2b6cac; font:12px "JetBrains Mono",Consolas,monospace; } .param p { margin:3px 0 0; color:var(--muted); font-size:13px; }
+    .code-card { overflow:hidden; border:1px solid #cad7d4; border-radius:11px; background:var(--code); } .code-head { display:flex; align-items:center; justify-content:space-between; min-height:43px; padding:0 12px; color:#d4e4e0; background:#1b363d; border-bottom:1px solid #31515a; font-size:12px; } .tabs { display:flex; gap:3px; } .tab { border:0; border-radius:5px; padding:5px 7px; color:#aec6c1; background:transparent; cursor:pointer; font:11px inherit; } .tab.active { color:#fff; background:#335761; } pre { margin:0; min-height:245px; overflow:auto; padding:18px; color:#e9f4f1; font-size:12px; line-height:1.72; white-space:pre; } .snippet { display:none; } .snippet.active { display:block; } .response { border-top:1px solid #31515a; } .response label { display:block; padding:8px 12px; color:#52656a; background:#eff4f1; font-size:11px; } .response pre { min-height:auto; max-height:190px; }
+    table { width:100%; margin-top:18px; border-collapse:collapse; border:1px solid var(--line); background:#fff; font-size:13px; } th,td { padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; } th { color:#38525a; background:#edf4f1; font-size:10px; letter-spacing:.08em; text-transform:uppercase; } tr:last-child td { border-bottom:0; } .yes { color:var(--green); font-weight:700; } .no { color:#a93d32; font-weight:700; } footer { padding-top:24px; border-top:1px solid var(--line); color:var(--muted); font-size:12px; }
+    .lang-switch { display:flex; gap:6px; margin:0 10px 14px; } .lang-switch button { border:1px solid #46636a; border-radius:999px; padding:5px 9px; color:#d4e4e0; background:transparent; cursor:pointer; font:12px inherit; } .lang-switch button.active { color:#102f38; background:#a8ddd2; border-color:#a8ddd2; } [data-doc-language][hidden] { display:none !important; }
+    @media (max-width:1050px) { .operation { grid-template-columns:1fr; } .grid { grid-template-columns:1fr 1fr; } } @media (max-width:760px) { .shell { display:block; } aside { position:relative; height:auto; padding:20px; } nav { display:grid; grid-template-columns:1fr 1fr; } .hero { padding:45px 24px; } main { padding:29px 18px 60px; } .grid { grid-template-columns:1fr; } .operation { padding:18px; } } @media (max-width:520px) { nav { display:block; } h1 { font-size:41px; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">Open Managed Agents<strong>SDK Reference</strong></div>
+      <div class="lang-switch" aria-label="Language / 语言"><button type="button" data-language="en">English</button><button type="button" data-language="zh">中文</button></div>
+      <input id="search" class="search" type="search" placeholder="Search this reference">
+      <nav>
+        <a class="active" href="#overview">Overview</a>
+        <div class="nav-label">Get Started</div><a href="#authentication">Authentication & base URL</a><a href="#profile">Compatibility profile</a>
+        <div class="nav-label">Managed Agents</div><a href="#create-agent">Agents</a><a class="sub" href="#create-agent">Create Agent</a><a class="sub" href="#list-agents">List Agents</a><a class="sub" href="#get-agent">Get version</a><a href="#create-session">Sessions</a><a class="sub" href="#create-session">Create Session</a><a class="sub" href="#send-event">Send events</a><a class="sub" href="#stream-events">Stream events</a><a href="#resources">Session resources</a><a href="#environments">Environments & Vaults</a>
+        <div class="nav-label">OMA Native</div><a href="#apps-webhooks">Applications & Webhooks</a><a href="#model-cards">Model Cards</a><a href="#sandbox">OpenShell / OpenSandbox</a><a href="#native-api">Platform management</a><a href="#matrix">Support matrix</a><a href="#limits">Known limits</a>
+      </nav>
+    </aside>
+    <div>
+<header class="hero"><div class="eyebrow">On-Premise Edition · API & SDK Reference</div><h1>Build applications on OMA with a first-class independent SDK.</h1><p class="lead">Use <code>@openma/sdk</code> for OMA application and platform APIs. Anthropic SDKs remain optional for compatible wire endpoints; they are not a replacement for OMA-native capabilities.</p><div class="badges"><span class="badge">main-node only</span><span class="badge">OMA SDK beta</span><span class="badge">TypeScript normative surface</span></div></header>
+      <main data-doc-language="en">
+<section id="overview"><h2>SDK Reference Scope</h2><p class="intro">This is an independent OMA SDK reference. The TypeScript package is the normative typed surface for stable application and platform-management APIs, while raw access remains available for lower-frequency stable endpoints.</p><div class="grid"><article class="card"><span class="status ready">@openma/sdk</span><h3>Application integration</h3><p>Agents, Sessions, Environments, Apps, Files, Skills, Memory Stores, Dreams and Webhooks, including lifecycle, resources and SSE helpers.</p></article><article class="card"><span class="status ready">OMA platform SDK</span><h3>Native management</h3><p>Vaults, Model Cards, API Keys, Analytics, Schedules, Workflow Runs and Evaluation Plans are first-class OMA SDK resources.</p></article><article class="card"><span class="status partial">Explicit boundary</span><h3>Supported raw escape hatch</h3><p>Use <code>oma.raw(method, path, init)</code> for stable endpoints without a dedicated wrapper. Worker protocols, callbacks and debug routes remain outside the SDK.</p></article></div><div class="notice"><strong>Language guidance.</strong>TypeScript is the current normative OMA SDK. Python and Go clients are not synchronized OMA SDKs; use HTTP or an Anthropic SDK only for compatible wire endpoints.</div><div class="notice warn"><strong>Compatibility is not substitution.</strong>Anthropic SDKs share selected runtime conventions with OMA, but cannot represent the full OMA platform contract.</div></section>
+        <section id="authentication"><h2>Authentication & Base URL</h2><p class="intro">Create an OMA API key in the active Workspace. Point the official client at the OMA server root. Do not append <code>/v1</code> to <code>baseURL</code>.</p><div class="operation"><div><span class="status ready">Ready</span><h3>Initialize client</h3><p class="signature mono">Anthropic({ apiKey, baseURL })</p><div class="endpoint"><span class="method">API KEY</span> x-api-key</div><div class="params"><div class="param"><b>apiKey</b><span class="type">string</span><p>OMA API key. It resolves the active Workspace / tenant context.</p></div><div class="param"><b>baseURL</b><span class="type">string</span><p>OMA root, for example <code>https://oma.company.example</code>.</p></div></div></div><div class="code-card" data-group="setup"><div class="code-head"><span>Client setup</span><div class="tabs"><button class="tab active" data-lang="ts">TypeScript</button><button class="tab" data-lang="py">Python</button><button class="tab" data-lang="go">Go</button><button class="tab" data-lang="curl">cURL</button></div></div><pre class="snippet active" data-lang="ts">import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic({
+  apiKey: process.env.OMA_API_KEY,
+  baseURL: "https://oma.company.example",
+});</pre><pre class="snippet" data-lang="py">from anthropic import Anthropic
+import os
+
+client = Anthropic(
+    api_key=os.environ["OMA_API_KEY"],
+    base_url="https://oma.company.example",
+)</pre><pre class="snippet" data-lang="go">client := anthropic.NewClient(
+  option.WithAPIKey(os.Getenv("OMA_API_KEY")),
+  option.WithBaseURL("https://oma.company.example"),
+)</pre><pre class="snippet" data-lang="curl">export OMA_BASE_URL="https://oma.company.example"
+export OMA_API_KEY="oma_..."
+
+curl "$OMA_BASE_URL/v1/agents" \
+  -H "x-api-key: $OMA_API_KEY"</pre></div></div></section>
+        <section id="profile"><h2>Compatibility Profile v1</h2><p class="intro">OMA remains the system of record. The compatibility layer translates the official SDK request and response contract at the On-Prem HTTP boundary.</p><table><thead><tr><th>Contract</th><th>On-Prem behavior</th><th>Reason</th></tr></thead><tbody><tr><td>Agent version</td><td>Historical retrieval and Session snapshot pinning</td><td>Production tasks remain reproducible after Agent updates.</td></tr><tr><td>Pagination</td><td>Accept <code>page</code>; return <code>next_page</code></td><td>Official SDK iterators retrieve all pages.</td></tr><tr><td>Session projection</td><td>Normalizes model and standard Agent fields</td><td>External clients receive stable objects.</td></tr><tr><td>OMA extensions</td><td>Native API or <code>_oma</code> extension</td><td>Enterprise governance remains explicit.</td></tr></tbody></table></section>
+        <section id="create-agent"><div class="operation"><div><span class="status ready">Ready</span><h3>Create Agent</h3><p class="signature mono">client.beta.agents.create(params)</p><div class="endpoint"><span class="method">POST</span> /v1/agents</div><div class="params"><div class="param"><b>name</b><span class="type">string · required</span><p>Human-readable Agent name.</p></div><div class="param"><b>model</b><span class="type">string | { id, speed }</span><p>Model ID resolved through OMA's configured provider and organization defaults.</p></div><div class="param"><b>system</b><span class="type">string | null</span><p>Agent system prompt.</p></div><div class="param"><b>tools / skills / mcp_servers</b><span class="type">array</span><p>Capabilities available to the Agent.</p></div></div></div><div class="code-card" data-group="agent"><div class="code-head"><span>Create Agent</span><div class="tabs"><button class="tab active" data-lang="ts">TypeScript</button><button class="tab" data-lang="py">Python</button><button class="tab" data-lang="go">Go</button><button class="tab" data-lang="curl">cURL</button></div></div><pre class="snippet active" data-lang="ts">const agent = await client.beta.agents.create({
+  name: "Finance analyst",
+  model: "claude-sonnet-4-6",
+  system: "Analyze financial data carefully.",
+  tools: [{ type: "agent_toolset_20260401" }],
+});
+console.log(agent.id);</pre><pre class="snippet" data-lang="py">agent = client.beta.agents.create(
+    name="Finance analyst",
+    model="claude-sonnet-4-6",
+    system="Analyze financial data carefully.",
+)</pre><pre class="snippet" data-lang="go">agent, err := client.Beta.Agents.New(ctx,
+  anthropic.BetaAgentNewParams{
+    Name: "Finance analyst",
+    Model: "claude-sonnet-4-6",
+  },
+)</pre><pre class="snippet" data-lang="curl">curl -X POST "$OMA_BASE_URL/v1/agents" \
+  -H "x-api-key: $OMA_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{"name":"Finance analyst","model":"claude-sonnet-4-6"}'</pre><div class="response"><label>Response 201</label><pre>{
+  "type": "agent",
+  "id": "agent_...",
+  "version": 1,
+  "model": { "id": "claude-sonnet-4-6", "speed": "standard" }
+}</pre></div></div></div>
+          <div class="operation" id="list-agents"><div><span class="status ready">Ready</span><h3>List Agents</h3><p class="signature mono">client.beta.agents.list({ limit, page })</p><div class="endpoint"><span class="method">GET</span> /v1/agents</div><div class="params"><div class="param"><b>limit</b><span class="type">number</span><p>Maximum results per page.</p></div><div class="param"><b>page</b><span class="type">string</span><p>Opaque SDK pagination token. Do not decode or construct it.</p></div></div></div><div class="code-card" data-group="list"><div class="code-head"><span>Auto-pagination</span><div class="tabs"><button class="tab active" data-lang="ts">TypeScript</button><button class="tab" data-lang="py">Python</button><button class="tab" data-lang="go">Go</button></div></div><pre class="snippet active" data-lang="ts">for await (const agent of client.beta.agents.list({ limit: 50 })) {
+  console.log(agent.id, agent.name, agent.version);
+}</pre><pre class="snippet" data-lang="py">for agent in client.beta.agents.list(limit=50):
+    print(agent.id, agent.name, agent.version)</pre><pre class="snippet" data-lang="go">page, err := client.Beta.Agents.List(ctx,
+  anthropic.BetaAgentListParams{Limit: 50},
+)
+for _, agent := range page.Data { fmt.Println(agent.ID) }</pre></div></div>
+          <div class="operation" id="get-agent"><div><span class="status ready">Ready</span><h3>Get Agent Version</h3><p class="signature mono">client.beta.agents.retrieve(agentId, { version })</p><div class="endpoint"><span class="method">GET</span> /v1/agents/:id?version=N</div><div class="params"><div class="param"><b>version</b><span class="type">number</span><p>Optional immutable Agent version. Omit it to retrieve the current version.</p></div></div></div><div class="notice"><strong>Version guarantee</strong>When Session creation receives <code>{ id, version }</code>, OMA persists and executes that exact Agent snapshot.</div></div>
+        </section>
+        <section id="create-session"><div class="operation"><div><span class="status ready">Ready</span><h3>Create Session</h3><p class="signature mono">client.beta.sessions.create(params)</p><div class="endpoint"><span class="method">POST</span> /v1/sessions</div><div class="params"><div class="param"><b>agent</b><span class="type">string | { id, version }</span><p>Use a versioned object for production and reproducible workflows.</p></div><div class="param"><b>environment_id</b><span class="type">string</span><p>On-Prem Environment selecting the sandbox or local runtime execution plane.</p></div><div class="param"><b>vault_ids</b><span class="type">string[]</span><p>Credential vaults attached to the Session.</p></div></div></div><div class="code-card" data-group="session"><div class="code-head"><span>Create version-pinned Session</span><div class="tabs"><button class="tab active" data-lang="ts">TypeScript</button><button class="tab" data-lang="py">Python</button><button class="tab" data-lang="go">Go</button><button class="tab" data-lang="curl">cURL</button></div></div><pre class="snippet active" data-lang="ts">const session = await client.beta.sessions.create({
+  agent: { id: "agent_...", version: 3 },
+  environment_id: "env_...",
+  title: "Quarterly revenue analysis",
+});
+console.log(session.id, session.agent.version);</pre><pre class="snippet" data-lang="py">session = client.beta.sessions.create(
+    agent={"id": "agent_...", "version": 3},
+    environment_id="env_...",
+    title="Quarterly revenue analysis",
+)</pre><pre class="snippet" data-lang="go">session, err := client.Beta.Sessions.New(ctx,
+  anthropic.BetaSessionNewParams{EnvironmentID: "env_..."},
+)</pre><pre class="snippet" data-lang="curl">curl -X POST "$OMA_BASE_URL/v1/sessions" \
+  -H "x-api-key: $OMA_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{"agent":{"id":"agent_...","version":3},"environment_id":"env_..."}'</pre></div></div></section>
+        <section id="send-event"><div class="operation"><div><span class="status ready">Ready</span><h3>Send Session Events</h3><p class="signature mono">client.beta.sessions.events.send(sessionId, { events })</p><div class="endpoint"><span class="method">POST</span> /v1/sessions/:id/events</div><div class="params"><div class="param"><b>events</b><span class="type">SessionEvent[]</span><p>Send <code>user.message</code>, <code>user.interrupt</code>, custom tool results and confirmations.</p></div></div></div><div class="code-card" data-group="event"><div class="code-head"><span>Send user.message</span><div class="tabs"><button class="tab active" data-lang="ts">TypeScript</button><button class="tab" data-lang="py">Python</button><button class="tab" data-lang="go">Go</button><button class="tab" data-lang="curl">cURL</button></div></div><pre class="snippet active" data-lang="ts">await client.beta.sessions.events.send("sess_...", {
+  events: [{
+    type: "user.message",
+    content: [{ type: "text", text: "Summarize this quarter." }],
+  }],
+});</pre><pre class="snippet" data-lang="py">client.beta.sessions.events.send("sess_...", events=[{
+    "type": "user.message",
+    "content": [{"type": "text", "text": "Summarize this quarter."}],
+}])</pre><pre class="snippet" data-lang="go">_, err := client.Beta.Sessions.Events.Send(ctx, "sess_...", params)</pre><pre class="snippet" data-lang="curl">curl -X POST "$OMA_BASE_URL/v1/sessions/sess_.../events" \
+  -H "x-api-key: $OMA_API_KEY" -H "content-type: application/json" \
+  -d '{"events":[{"type":"user.message","content":[{"type":"text","text":"Summarize this quarter."}]}]}'</pre></div></div></section>
+        <section id="stream-events"><div class="operation"><div><span class="status ready">Ready</span><h3>Stream Session Events</h3><p class="signature mono">client.beta.sessions.events.stream(sessionId)</p><div class="endpoint"><span class="method">GET</span> /v1/sessions/:id/events/stream</div><div class="params"><div class="param"><b>Server-Sent Events</b><span class="type">SSE</span><p>OMA emits named SSE events and defaults to Managed Agents compatible event types. A turn finishes at <code>session.status_idle</code>.</p></div></div></div><div class="code-card" data-group="stream"><div class="code-head"><span>Read an Agent turn</span><div class="tabs"><button class="tab active" data-lang="ts">TypeScript</button><button class="tab" data-lang="py">Python</button><button class="tab" data-lang="go">Go</button></div></div><pre class="snippet active" data-lang="ts">const stream = await client.beta.sessions.events.stream("sess_...");
+for await (const event of stream) {
+  if (event.type === "agent.message") console.log(event.content);
+  if (event.type === "session.status_idle") break;
+}</pre><pre class="snippet" data-lang="py">for event in client.beta.sessions.events.stream("sess_..."):
+    if event.type == "agent.message": print(event.content)
+    if event.type == "session.status_idle": break</pre><pre class="snippet" data-lang="go">stream := client.Beta.Sessions.Events.Stream(ctx, "sess_...")
+for stream.Next() { fmt.Println(stream.Current().Type) }</pre></div></div></section>
+        <section id="resources"><h2>Session Resources</h2><p class="intro">Resource list, retrieve and delete are within the profile. File upload and GitHub token rotation need dedicated On-Prem security and storage paths.</p><table><thead><tr><th>Operation</th><th>Status</th><th>Notes</th></tr></thead><tbody><tr><td>List / retrieve resources</td><td class="yes">Ready</td><td>SDK-compatible pagination envelope.</td></tr><tr><td>Delete resource</td><td class="yes">Ready</td><td>Returns <code>session_resource_deleted</code>.</td></tr><tr><td>Update GitHub authorization token</td><td class="no">Not enabled</td><td>Requires secure token storage and sandbox injection. Tokens are never written into ordinary resource metadata.</td></tr><tr><td>Official Files API</td><td class="no">Not enabled</td><td><code>client.beta.files.*</code> is outside v1.</td></tr></tbody></table></section>
+        <section id="apps-webhooks"><h2>Applications, Webhooks and Evaluations</h2><p class="intro">Applications group Agent integrations. Webhook subscriptions deliver selected Session events and may filter by Application and Agent IDs. Eval Runs are OMA Native APIs because a Batch compares multiple Agent configurations over the same task set.</p><table><thead><tr><th>Domain</th><th>Endpoint</th><th>Important behavior</th></tr></thead><tbody><tr><td>Applications</td><td><code>/v1/apps</code></td><td>Workspace-scoped application identity and Agent grouping.</td></tr><tr><td>Webhooks</td><td><code>/v1/webhook_subscriptions</code></td><td>Event types, endpoint, app/agent filters, delivery inspection and retry.</td></tr><tr><td>Eval Runs</td><td><code>/v1/evals/runs</code></td><td><code>terminate</code> interrupts active Sessions and preserves evidence; delete is destructive and can include Sessions.</td></tr></tbody></table></section>
+        <section id="model-cards"><h2>Model Cards and Azure OpenAI-compatible gateways</h2><p class="intro">Model Cards keep provider, deployment/model ID, base URL and credentials together. Probe a card before assigning it to an Agent.</p><pre>POST /v1/model_cards/probe
+{
+  "provider": "azure-openai-compatible",
+  "base_url": "https://hostname/ai-gateway/api/v1/ai/azure/default",
+  "model_id": "gpt-5.6-luna",
+  "api_key": "..."
+}</pre><p>OMA constructs the Azure deployment route <code>/openai/deployments/&lt;model&gt;/chat/completions?api-version=2024-10-21</code> and uses the <code>api-key</code> header. A probe 404 usually indicates that a deployment URL was supplied instead of the gateway root.</p></section>
+        <section id="sandbox"><h2>OpenShell and OpenSandbox execution</h2><p>External workers publish <code>sandbox_home_dir</code>, <code>sandbox_work_dir</code>, <code>sandbox_skills_dir</code> and output support. OMA resolves file, Skill and workspace mounts from those capabilities; callers must not assume <code>/sandbox</code> or <code>/mnt/session</code>. Reset the Environment running binding after changing image, policy or worker paths.</p></section>
+        <section id="environments"><h2>Environments & Vaults</h2><p class="intro">Environment and Vault CRUD use SDK-compatible page tokens. Worker keys, sandbox worker registration, ACP Runtime pairing and bridge operations remain OMA Native APIs.</p><div class="grid"><article class="card"><span class="status ready">Ready</span><h3>Environments</h3><p>Select the execution environment for a Session.</p></article><article class="card"><span class="status ready">Ready</span><h3>Vaults</h3><p>Attach credential Vault IDs to Sessions without exposing credentials in sandbox metadata.</p></article><article class="card"><span class="status native">Native configuration</span><h3>Runtimes & workers</h3><p>Manage the On-Prem execution topology through OMA APIs.</p></article></div></section>
+<section id="native-api"><h2>OMA Native Platform APIs</h2><p class="intro">OMA-native capabilities are not required to look like Anthropic APIs. Stable customer-facing management domains are represented by typed OMA SDK resources; internal execution protocols remain REST-only.</p><table><thead><tr><th>Domain</th><th>SDK surface</th><th>Boundary</th></tr></thead><tbody><tr><td>Vaults, credentials, Model Cards, API keys</td><td>Typed <code>oma.vaults</code>, <code>oma.modelCards</code>, <code>oma.apiKeys</code></td><td>OMA-owned security and provider configuration.</td></tr><tr><td>Analytics, schedules, workflows, evaluation plans</td><td>Typed <code>oma.analytics</code>, <code>oma.agentSchedules</code>, <code>oma.workflowRuns</code>, <code>oma.evaluationPlans</code></td><td>OMA owns governance, orchestration and evidence semantics.</td></tr><tr><td>Tenant governance and organization policy</td><td>REST or <code>oma.raw()</code> until dedicated wrappers stabilize</td><td>Workspace, role and inheritance semantics are OMA-owned.</td></tr><tr><td>Runtime workers, OAuth callbacks, debug/recovery</td><td>Outside normal SDK scope</td><td>Deployment and internal protocol surface.</td></tr></tbody></table></section>
+<section id="matrix"><h2>Support Matrix</h2><table><thead><tr><th>API family</th><th>Current profile</th><th>Recommended client</th></tr></thead><tbody><tr><td>Agents / Sessions / Events / Threads</td><td class="yes">Typed SDK</td><td><code>@openma/sdk</code></td></tr><tr><td>Files / Memory / Skills / Apps / Webhooks</td><td class="yes">Typed SDK</td><td><code>@openma/sdk</code></td></tr><tr><td>Vaults / Model Cards / API keys / Analytics</td><td class="yes">Typed OMA-native SDK</td><td><code>@openma/sdk</code></td></tr><tr><td>Schedules / Workflows / Evaluation Plans</td><td class="yes">Typed OMA-native SDK</td><td><code>@openma/sdk</code></td></tr><tr><td>Tenant governance / runtimes / integrations</td><td class="partial">Raw or REST</td><td><code>oma.raw()</code> or REST</td></tr><tr><td>Worker protocol / callbacks / debug recovery</td><td class="no">Outside SDK scope</td><td>Internal services only</td></tr></tbody></table></section>
+        <section id="limits"><h2>Known Limits & Integration Guidance</h2><div class="notice warn"><strong>Pin your SDK version.</strong>Compatibility is tested against a declared SDK version, not <code>latest</code>. Upgrade only after the OMA compatibility test matrix approves it.</div><ul><li>Keep OMA base URLs and API keys in environment configuration, not source code.</li><li>Use <code>{ id, version }</code> for production Sessions and evaluation workflows.</li><li>Use OMA Native APIs for workspace, membership and organization administration.</li><li>Do not assume all APIs visible in Anthropic documentation are available in On-Prem OMA.</li></ul></section>
+        <footer>OMA On-Prem SDK Reference · Compatibility Profile v1 · Based on the current <code>main-node</code> implementation.</footer>
+      </main>
+      <main data-doc-language="zh" hidden>
+        <section id="overview-zh"><h2>SDK Reference 范围</h2><p class="intro">本页是当前 On-Premise OMA 的 SDK 与 Native API 参考。英文是默认语言；使用左侧切换按钮查看中文。OMA SDK 直接提供 Agents、Sessions、Environments、Apps、Webhook Subscriptions、Memory Stores 和 Dreams 资源。</p><div class="grid"><article class="card"><span class="status ready">TypeScript SDK</span><h3>应用集成</h3><p>使用 <code>@openma/sdk</code> 创建版本化 Agent、Session、事件、Application 和 Webhook。</p></article><article class="card"><span class="status native">OMA Native API</span><h3>平台治理</h3><p>Workspace、组织设置、Model Card、Eval Runs、Worker、Vault 和权限使用 OMA REST API。</p></article><article class="card"><span class="status partial">明确边界</span><h3>不要猜接口</h3><p>SDK 类型只覆盖已发布资源；新增平台能力应按 Native endpoint 和当前版本验证。</p></article></div></section>
+        <section id="authentication-zh"><h2>认证与 Base URL</h2><p>SDK 使用 <code>x-api-key</code>，Node 20、Bun、Deno、浏览器和 Cloudflare Workers 均可运行。</p><pre>import { OpenMA } from "@openma/sdk";
+const oma = new OpenMA({
+  baseUrl: process.env.OMA_API_URL,
+  apiKey: process.env.OMA_API_KEY,
+});</pre><p>PowerShell 请求请使用 <code>Invoke-RestMethod -Headers @{"x-api-key"=$env:OMA_API_KEY}</code>；不要把 <code>/v1</code> 重复拼到 SDK 的 root URL。</p></section>
+        <section id="profile-zh"><h2>SDK 资源</h2><table><thead><tr><th>资源</th><th>SDK 入口</th><th>关键能力</th></tr></thead><tbody><tr><td>Agents</td><td><code>oma.agents</code></td><td>创建、更新（生成新版本）、列表、获取、归档。</td></tr><tr><td>Sessions</td><td><code>oma.sessions</code></td><td>创建、发送事件、聊天、SSE、tail、资源关联。</td></tr><tr><td>Applications</td><td><code>oma.apps</code></td><td>创建和管理应用身份，用于 Agent 集成与 Webhook 过滤。</td></tr><tr><td>Webhooks</td><td><code>oma.webhookSubscriptions</code></td><td>订阅 Session 事件、按 app/agent 过滤、更新、删除。</td></tr><tr><td>Memory Stores</td><td><code>oma.memoryStores</code></td><td>Store/Memory/Version CRUD、CAS、版本回滚和 redact。</td></tr><tr><td>Dreams</td><td><code>oma.dreams</code></td><td>异步记忆整理任务。</td></tr><tr><td>Environments</td><td><code>oma.environments</code></td><td>创建和选择执行环境。</td></tr></tbody></table></section>
+        <section id="create-agent-zh"><h2>创建 Agent</h2><p><code>model</code> 可为字符串或带 speed 的对象；Agent 可绑定 Skills、MCP、callable_agents、Model Card、aux model 与 harness。</p><pre>const agent = await oma.agents.create({
+  name: "Researcher",
+  model: "azure-gpt-o4-mini",
+  system: "Answer with cited facts.",
+  harness: "strands",
+  skills: [{ skill_id: "skill_xxx", type: "prompt" }],
+  mcp_servers: [{ name: "atlas", type: "http", url: "https://mcp.example/mcp" }],
+});</pre></section>
+        <section id="create-session-zh"><h2>创建 Session 与事件</h2><pre>const session = await oma.sessions.create({
+  agent: { id: agent.id, version: agent.version },
+  environment_id: "env_xxx",
+});
+await oma.sessions.sendMessage(session.id, "请检查输入文件");
+for await (const event of oma.sessions.tail(session.id)) {
+  if (event.type === "agent.message") console.log(event.content);
+  if (event.type === "session.status_idle") break;
+}</pre><p>同一个 Session 的 turn 按顺序处理；客户端应等待 idle，或明确发送 interrupt。</p></section>
+        <section id="resources-zh"><h2>资源、Environment 与 Sandbox</h2><p>文件、GitHub、Memory Store 和 Vault 通过 Session resources 关联。OpenShell/OpenSandbox worker 会上报 <code>sandbox_home_dir</code>、<code>sandbox_work_dir</code>、<code>sandbox_skills_dir</code> 和 outputs 能力；客户端不要写死 <code>/sandbox</code> 或 <code>/mnt/session</code>。Worker 变更 image、policy 或工作目录后，需要 reset running binding。</p></section>
+        <section id="native-api-zh"><h2>OMA Native API</h2><table><thead><tr><th>领域</th><th>Endpoint 示例</th><th>说明</th></tr></thead><tbody><tr><td>Model Cards</td><td><code>/v1/model_cards</code>、<code>/v1/model_cards/probe</code></td><td>支持 OpenAI-compatible 与 Azure OpenAI-compatible；Azure gateway base URL 形如 <code>https://hostname/ai-gateway/api/v1/ai/azure/default</code>。</td></tr><tr><td>Applications</td><td><code>/v1/apps</code></td><td>工作区级应用管理。</td></tr><tr><td>Webhooks</td><td><code>/v1/webhook_subscriptions</code></td><td>事件、endpoint、app_ids、agent_ids 和 delivery retry。</td></tr><tr><td>Eval</td><td><code>/v1/evals/runs</code></td><td>创建、列出、详情、terminate、delete、scan、rescore；Batch 由 Console 组织。</td></tr><tr><td>治理/执行</td><td><code>/v1/me</code>、<code>/v1/tenants</code>、<code>/v1/runtimes</code></td><td>成员、API key、组织默认值、Worker 和 sandbox topology。</td></tr></tbody></table></section>
+        <section id="matrix-zh"><h2>事件、错误与版本建议</h2><ul><li>使用 SSE <code>/v1/sessions/:id/events/stream</code> 实时接收事件，也可 JSON polling。</li><li>保存 Agent 的 <code>id + version</code>，保证生产和 Eval 可复现。</li><li>遇到 <code>OpenMAError</code> 时检查 <code>status</code>、<code>body</code> 和 <code>raw</code>。</li><li>terminate 会中断活动 Session 并保留证据；delete 会删除 Eval 数据，可选择同步删除关联 Sessions。</li><li>SDK 版本应锁定；以仓库当前类型导出为准，不要自动假设官方 SDK 的新资源已兼容。</li></ul></section>
+        <footer>OMA On-Prem SDK Reference · 中文版。返回英文可点击左侧 English。</footer>
+      </main>
+    </div>
+  </div>
+  <script>
+    document.querySelectorAll('.code-card').forEach((card) => {
+      card.querySelectorAll('.tab').forEach((tab) => tab.addEventListener('click', () => {
+        const lang = tab.dataset.lang;
+        card.querySelectorAll('.tab').forEach((item) => item.classList.toggle('active', item === tab));
+        card.querySelectorAll('.snippet').forEach((item) => item.classList.toggle('active', item.dataset.lang === lang));
+      }));
+    });
+    document.getElementById('search').addEventListener('input', (event) => {
+      const query = event.target.value.trim().toLowerCase();
+      document.querySelectorAll('nav a').forEach((link) => { link.style.display = !query || link.textContent.toLowerCase().includes(query) ? 'block' : 'none'; });
+    });
+    (() => {
+      const panels = [...document.querySelectorAll('[data-doc-language]')];
+      const buttons = [...document.querySelectorAll('[data-language]')];
+      const links = [...document.querySelectorAll('nav a[href^="#"]')];
+      const setLanguage = (lang) => {
+        panels.forEach((panel) => { panel.hidden = panel.dataset.docLanguage !== lang; });
+        buttons.forEach((button) => button.classList.toggle('active', button.dataset.language === lang));
+        const aliases = { 'list-agents': 'create-agent', 'get-agent': 'create-agent', 'send-event': 'create-session', 'stream-events': 'create-session', environments: 'resources', limits: 'matrix', 'apps-webhooks': 'native-api', 'model-cards': 'native-api', sandbox: 'resources' };
+        links.forEach((link) => {
+          const base = link.dataset.baseHref || link.getAttribute('href').replace(/-(?:zh|en)$/, '');
+          link.dataset.baseHref = base;
+          const candidate = lang === 'zh' ? `${base.slice(1)}-zh` : base.slice(1);
+          const fallback = aliases[base.slice(1)] || base.slice(1);
+          const fallbackId = lang === 'zh' && document.getElementById(`${fallback}-zh`) ? `${fallback}-zh` : fallback;
+          link.setAttribute('href', document.getElementById(candidate) ? `#${candidate}` : `#${fallbackId}`);
+        });
+        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        localStorage.setItem('oma-sdk-language', lang);
+      };
+      buttons.forEach((button) => button.addEventListener('click', () => setLanguage(button.dataset.language)));
+      setLanguage(localStorage.getItem('oma-sdk-language') || 'en');
+    })();
+</script>
+<script>
+  (() => {
+    const nav = document.querySelector('aside nav');
+    const search = document.getElementById('search');
+    const en = [
+      ['Overview', '#overview'], ['Get started', null], ['Authentication & base URL', '#authentication'], ['Compatibility profile', '#profile'], ['Managed Agents', null], ['Agents', '#create-agent'], ['Create Agent', '#create-agent', 'sub'], ['List Agents', '#list-agents', 'sub'], ['Get version', '#get-agent', 'sub'], ['Sessions', '#create-session'], ['Create Session', '#create-session', 'sub'], ['Send events', '#send-event', 'sub'], ['Stream events', '#stream-events', 'sub'], ['Session resources', '#resources'], ['Environments & Vaults', '#environments'], ['OMA Native', null], ['Applications & Webhooks', '#apps-webhooks'], ['Model Cards', '#model-cards'], ['OpenShell / OpenSandbox', '#sandbox'], ['Platform management', '#native-api'], ['Support matrix', '#matrix'], ['Known limits', '#limits'],
+    ];
+    const zh = [
+      ['概览', '#overview-zh'], ['开始使用', null], ['认证与 Base URL', '#authentication-zh'], ['SDK 资源', '#profile-zh'], ['托管 Agent', null], ['创建与配置 Agent', '#create-agent-zh'], ['创建 Session 与事件', '#create-session-zh'], ['资源、Environment 与 Sandbox', '#resources-zh'], ['OMA Native', null], ['Applications、Webhooks、Model Cards 与 Eval', '#native-api-zh'], ['事件、错误与版本建议', '#matrix-zh'],
+    ];
+      const renderNav = (lang) => {
+      const items = lang === 'zh' ? zh : en;
+      nav.innerHTML = items.map(([label, href, cls]) => href ? `<a${cls ? ` class="${cls}"` : ''} href="${href}">${label}</a>` : `<div class="nav-label">${label}</div>`).join('');
+      search.placeholder = lang === 'zh' ? '搜索本参考文档' : 'Search this reference';
+      document.querySelector('.brand strong').textContent = lang === 'zh' ? 'SDK 参考' : 'SDK Reference';
+      document.querySelector('.hero .eyebrow').textContent = lang === 'zh' ? 'On-Premise Edition · API 与 SDK 参考' : 'On-Premise Edition · API & SDK Reference';
+      document.querySelector('.hero h1').textContent = lang === 'zh' ? '在 OMA 上构建应用，同时保持平台治理。' : 'Build applications on OMA without losing platform governance.';
+      document.querySelector('.hero .lead').textContent = lang === 'zh' ? '使用 @openma/sdk 集成 Agent、Session、Application、Webhook、Memory 和 Dreams；使用 OMA Native API 管理工作区、模型、执行环境、评估与组织治理。' : 'Use the typed @openma/sdk surface for application integration. Use OMA Native APIs for workspace, model, execution, evaluation and enterprise governance.';
+      };
+      document.querySelectorAll('[data-language]').forEach((button) => button.addEventListener('click', () => setTimeout(() => renderNav(button.dataset.language), 0)));
+      renderNav(localStorage.getItem('oma-sdk-language') || 'en');
+      search.dispatchEvent(new Event('input'));
+  })();
+</script>
+</body>
+</html>

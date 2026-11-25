@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Install OMA · Open Managed Agents</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1219;--panel:#121d27;--line:#2a3b48;--text:#edf3f6;--muted:#a6b4bd;--mint:#64d6bc;--accent:#ff725f}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.7 system-ui,-apple-system,sans-serif}a{color:var(--mint)}header,main,footer{max-width:920px;margin:auto;padding-left:24px;padding-right:24px}header{padding-top:24px;padding-bottom:25px;border-bottom:1px solid var(--line)}header a{color:#c6d3da;text-decoration:none;font-size:13px}main{padding-top:44px;padding-bottom:64px}h1,h2,h3{font-family:system-ui,sans-serif;line-height:1.2;letter-spacing:-.03em}h1{font-size:44px;margin:10px 0 14px}h2{font-size:25px;margin-top:40px}p,li{color:var(--muted)}.eyebrow{color:var(--mint);font:11px ui-monospace,monospace;letter-spacing:.12em}.notice{padding:16px 18px;border:1px solid #776040;border-radius:8px;background:#231f18;color:#f3d39d}.notice p{margin:5px 0 0;color:#dfcda8}.steps{display:grid;gap:12px;margin-top:22px}.step{padding:18px 20px;border:1px solid var(--line);border-radius:9px;background:var(--panel)}.step h3{margin:0 0 6px;font-size:17px}.step p{margin:5px 0}.step code,code{font:13px ui-monospace,monospace;color:#c4eee2;background:#1a2b34;padding:2px 5px;border-radius:4px}pre{overflow:auto;padding:17px;border:1px solid #344753;border-radius:8px;background:#091017;color:#d7e5e9;font:12px/1.65 ui-monospace,monospace}.button{display:inline-block;margin:9px 0;padding:11px 15px;border-radius:6px;background:var(--accent);color:#1c1616;font-weight:700;text-decoration:none}.card{margin:20px 0;padding:18px 20px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}footer{padding-top:20px;padding-bottom:28px;border-top:1px solid var(--line);color:#7f929e;font-size:12px}
+</style>
+</head>
+<body>
+<header><a href="../index.html">← Open Managed Agents</a></header>
+<main>
+<p class="eyebrow">ON-PREMISE · INSTALLATION</p>
+<h1>Install and operate OMA</h1>
+<p>OMA is distributed as versioned Linux deployment bundles and GHCR container images. Use the bundle and exact image tags from the same release so the server, Vault service, and sandbox worker stay compatible.</p>
+<div class="notice"><strong>Release availability</strong><p>Download links become active when the first public release is published. Until then, this page describes the intended installation flow; do not use placeholder image tags.</p></div>
+<a class="button" href="https://github.com/bladexxx/On-Premise-ManagedAgents/releases">Open GitHub Releases ↗</a>
+<h2>Requirements</h2>
+<ul><li>Linux x86_64 host with Docker Engine and the Docker Compose plugin.</li><li>Outbound access to GHCR and the model provider you configure.</li><li>A stable HTTPS URL and persistent storage for OMA data.</li><li>For isolated Agent tools, a separately configured OpenSandbox or OpenShell service and a matching sandbox-worker release.</li></ul>
+<h2>First install</h2>
+<div class="steps">
+<article class="step"><h3>1. Download and verify the release bundle</h3><p>Choose one release and download its <code>oma-deployment-*.tar.gz</code> plus the matching SHA-256 file. Verify the archive before extraction.</p><pre>sha256sum -c oma-deployment-&lt;version&gt;.tar.gz.sha256
+tar -xzf oma-deployment-&lt;version&gt;.tar.gz
+cd oma-deployment-&lt;version&gt;</pre></article>
+<article class="step"><h3>2. Set local secrets and URL</h3><p>Copy the included environment template, set strong secrets, and restrict access to the resulting file. Do not commit it or place credentials in the public repository.</p><pre>cp .env.example .env
+chmod 600 .env
+$EDITOR .env</pre><p>Set the required model credential, <code>BETTER_AUTH_SECRET</code>, <code>PLATFORM_ROOT_SECRET</code>, and <code>PUBLIC_BASE_URL</code>. Back up the root secret securely; existing encrypted credentials depend on it.</p></article>
+<article class="step"><h3>3. Pull the version-pinned images and start OMA</h3><p>Use the Compose file included in the release bundle. It references the matching image versions.</p><pre>docker compose -f docker-compose.deployment.yml pull
+docker compose -f docker-compose.deployment.yml up -d
+docker compose -f docker-compose.deployment.yml ps
+curl --fail http://127.0.0.1:8787/health</pre></article>
+<article class="step"><h3>4. Put HTTPS in front of the Console</h3><p>Configure your approved reverse proxy and DNS. Keep the application port private to the host or internal network, and set <code>PUBLIC_BASE_URL</code> to the browser-facing HTTPS origin.</p></article>
+<article class="step"><h3>5. Add an isolated sandbox worker when needed</h3><p>The deployment archive includes a separately packaged worker for supported isolated runtimes. Follow the bundled release guide and use the worker package and server images from the same version.</p><p>Quick Start local execution and an isolated Environment have different trust boundaries. Follow the <a href="user-guide.html">user guide</a> and the release notes to choose a safe runtime.</p></article>
+</div>
+<h2>Upgrade and rollback</h2>
+<div class="card"><p>Download the next version into a separate directory, back up the persistent <code>data</code> directory, and preserve the existing local environment configuration while updating image tags from the new bundle. Pull and restart using that version's Compose file. A database migration may not be reversible; restore the matching data backup when rolling back.</p></div>
+<h2>Release contents</h2>
+<p>Each published release should include the deployment bundle, checksum, standalone sandbox-worker archive and checksum, exact image references, release notes, and license/third-party notices. GHCR packages must be set to public before users can pull without authentication.</p>
+<p>For product workflows and configuration, continue with the <a href="user-guide.html">OMA user guide</a>. For application integration, use the <a href="sdk-reference.html">SDK reference</a>.</p>
+</main>
+<footer>Open Managed Agents · On-Premise distribution</footer>
+</body>
+</html>

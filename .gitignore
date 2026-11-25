@@ -1,0 +1,8 @@
+# Local release builds and runtime data
+.env
+.env.*
+!.env.example
+node_modules/
+release/
+*.log
+.DS_Store

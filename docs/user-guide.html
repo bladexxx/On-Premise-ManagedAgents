@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Open Managed Agents On-Premise OMA 功能使用说明书">
+  <title>OMA On-Premise 功能使用说明书</title>
+  <style>
+    :root {
+      --ink: #182329;
+      --muted: #5d6b70;
+      --paper: #f6f7f3;
+      --panel: #ffffff;
+      --line: #dfe5df;
+      --teal: #0c6b68;
+      --teal-dark: #084b4a;
+      --mint: #d9efdf;
+      --amber: #b36a18;
+      --amber-bg: #fff1d6;
+      --red: #a33c31;
+      --red-bg: #fde5e0;
+      --shadow: 0 18px 50px rgba(24, 35, 41, .08);
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font: 15px/1.75 Georgia, "Noto Serif SC", serif; }
+    a { color: var(--teal); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code, pre, .eyebrow, .badge, th, .api { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { background: #eef2ed; padding: .12em .35em; border-radius: 5px; font-size: .9em; }
+    .shell { display: grid; grid-template-columns: 280px minmax(0, 1fr); max-width: 1560px; margin: 0 auto; }
+    aside { position: sticky; top: 0; height: 100vh; padding: 34px 22px; overflow: auto; background: #102f32; color: #e7f1ea; }
+    .brand { letter-spacing: .16em; text-transform: uppercase; font: 700 13px/1.2 Arial, sans-serif; color: #a9d9c0; }
+    .brand strong { display: block; margin-top: 12px; color: #fff; font: 700 27px/1.1 Georgia, serif; letter-spacing: -.03em; text-transform: none; }
+    .side-note { color: #b9ccc4; font-size: 12px; margin: 20px 0 28px; }
+    nav a { display: block; padding: 7px 10px; border-left: 2px solid transparent; color: #c8dcd3; font: 13px/1.45 Arial, sans-serif; }
+    nav a:hover { color: #fff; border-color: #8bd0b0; background: rgba(255,255,255,.06); text-decoration: none; }
+    .content { min-width: 0; }
+    .hero { padding: 82px clamp(28px, 7vw, 100px) 70px; background: radial-gradient(circle at 85% 20%, #d3ead9 0, transparent 30%), linear-gradient(135deg, #eaf1e8, #f8f7ef 65%); border-bottom: 1px solid var(--line); }
+    .eyebrow { color: var(--teal); font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    h1, h2, h3, h4 { color: var(--teal-dark); line-height: 1.18; margin: 0 0 16px; font-family: Georgia, "Noto Serif SC", serif; }
+    h1 { max-width: 840px; margin-top: 18px; font-size: clamp(42px, 6vw, 78px); letter-spacing: -.055em; }
+    h2 { padding-top: 18px; font-size: 31px; letter-spacing: -.03em; }
+    h3 { margin-top: 30px; font-size: 22px; }
+    h4 { margin-top: 22px; font-size: 17px; }
+    .lead { max-width: 850px; margin: 22px 0 28px; color: #40565b; font-size: 20px; line-height: 1.6; }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; color: var(--muted); font: 12px Arial, sans-serif; }
+    .badge { display: inline-block; padding: 5px 9px; border-radius: 99px; background: var(--mint); color: var(--teal-dark); font-size: 11px; }
+    main { padding: 42px clamp(28px, 7vw, 100px) 90px; }
+    section { max-width: 1050px; margin: 0 auto 64px; scroll-margin-top: 24px; }
+    .section-intro { max-width: 800px; color: var(--muted); font-size: 17px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 24px 0; }
+    .card { padding: 20px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); box-shadow: 0 7px 20px rgba(24,35,41,.035); }
+    .card h3 { margin-top: 0; font-size: 19px; }
+    .card p { margin-bottom: 0; color: var(--muted); }
+    .callout { margin: 22px 0; padding: 18px 20px; border-left: 4px solid var(--teal); border-radius: 0 var(--radius) var(--radius) 0; background: #eaf4ee; }
+    .callout.warn { border-color: var(--amber); background: var(--amber-bg); }
+    .callout.limit { border-color: var(--red); background: var(--red-bg); }
+    .callout strong { display: block; margin-bottom: 5px; font-family: Arial, sans-serif; }
+    table { width: 100%; margin: 18px 0 24px; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); font-size: 14px; }
+    th, td { padding: 11px 13px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--teal-dark); background: #edf3ed; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    .api { display: inline-block; color: #493b21; background: #fff3da; padding: 2px 6px; border-radius: 5px; font-size: 12px; white-space: nowrap; }
+    pre { overflow: auto; padding: 18px; border-radius: 12px; background: #172629; color: #e9f4ea; font-size: 12px; line-height: 1.65; }
+    ul, ol { padding-left: 1.4em; }
+    li { margin: 5px 0; }
+    .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 22px 0; }
+    .flow div { position: relative; padding: 15px 10px; text-align: center; border-radius: 12px; background: #e6f0e9; color: var(--teal-dark); font: 700 12px/1.35 Arial, sans-serif; }
+    .flow div:not(:last-child)::after { content: "→"; position: absolute; right: -13px; top: 18px; color: var(--teal); font-size: 18px; z-index: 1; }
+    .small { color: var(--muted); font-size: 13px; }
+    .lang-switch { display:flex; gap:6px; margin:14px 0 18px; }
+    .lang-switch button { border:1px solid #496c67; border-radius:999px; padding:5px 9px; color:#c8dcd3; background:transparent; cursor:pointer; font:12px Arial,sans-serif; }
+    .lang-switch button.active { color:#102f32; background:#a9d9c0; border-color:#a9d9c0; }
+    [data-doc-language][hidden] { display:none !important; }
+    footer { max-width: 1050px; margin: 0 auto; padding-top: 30px; color: var(--muted); border-top: 1px solid var(--line); font-size: 13px; }
+    @media (max-width: 900px) { .shell { display: block; } aside { position: relative; height: auto; padding: 22px 24px; } nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero { padding: 54px 26px; } main { padding: 30px 26px 60px; } }
+    @media (max-width: 580px) { nav { display: block; } .flow { grid-template-columns: 1fr; } .flow div:not(:last-child)::after { content: "↓"; top: auto; right: 50%; bottom: -22px; } table { display: block; overflow: auto; white-space: normal; } }
+    @media print { aside { display: none; } .shell { display: block; } .hero { padding: 35px 0; } main { padding: 20px 0; } .card, table { box-shadow: none; } a { color: inherit; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">Open Managed Agents<strong>OMA</strong></div>
+      <div class="lang-switch" aria-label="Language / 语言"><button type="button" data-language="en">English</button><button type="button" data-language="zh">中文</button></div>
+      <p class="side-note">On-Premise 功能使用说明书<br>面向技术人员与业务使用者</p>
+      <nav aria-label="目录">
+        <a href="#scope">1. 范围与定位</a>
+        <a href="#quickstart">2. 快速开始</a>
+        <a href="#workspace">3. Workspace、Tenant 与权限</a>
+        <a href="#organization">4. Organization Settings 与组织级默认值</a>
+        <a href="#agents">5. Agent、Harness 与 ACP Proxy</a>
+        <a href="#sessions">6. Session 与 Agent 执行</a>
+        <a href="#resources">7. Resources 资源管理</a>
+        <a href="#models">8. 模型、Model Card 与运行时</a>
+        <a href="#evals">9. 评估、集成与高级能力</a>
+        <a href="#api">10. API、认证与 CLI</a>
+        <a href="#operations">11. On-Premise 部署与运维</a>
+        <a href="#limits">12. 当前版本边界与未覆盖能力</a>
+        <a href="#troubleshooting">13. 常见问题与排障</a>
+      </nav>
+    </aside>
+    <div class="content">
+      <header class="hero">
+        <div class="eyebrow">On-Premise Edition · User Guide</div>
+        <h1>把 OMA 用成一个可治理的 Agent 工作平台</h1>
+        <p class="lead">这是一份基于当前代码库生成的 On-Premise OMA 功能使用说明书。它同时服务于平台管理员、Agent 开发者、数据分析师、业务分析师和普通业务人员，帮助读者从登录、创建工作区开始，逐步完成 Agent 配置、Session 执行、资源挂载和结果查看。</p>
+        <div class="meta"><span class="badge">覆盖 main-node、Console、SDK 与 Builder MCP</span><span class="badge">适用于 Console 与 /v1 API</span><span>文档基线：当前代码库 · 2026-09-13</span></div>
+      </header>
+      <main data-doc-language="en">
+        <section id="scope-en">
+          <h2>1. Scope and positioning</h2>
+          <p class="section-intro">This guide describes only the enterprise on-premise edition of OMA. In this document, “server” means <code>apps/main-node</code> and “frontend” means OMA Console. Managed-platform-only Workers, Durable Objects, D1, R2 and hosted billing flows are outside the scope of this guide.</p>
+          <div class="grid">
+            <article class="card"><h3>For business users</h3><p>Select a Workspace, create or use an Agent, send tasks, and review progress and outputs without needing to understand databases or containers.</p></article>
+            <article class="card"><h3>For analysts</h3><p>Upload files, mount Memory Stores, configure models and environments, and review work through Session events and outputs.</p></article>
+            <article class="card"><h3>For developers</h3><p>Use REST APIs, SSE, SDKs, API Keys and CLI tokens to integrate OMA with internal systems and automation.</p></article>
+            <article class="card"><h3>For administrators</h3><p>Operate authentication, Workspaces, member roles, model credentials, runtimes, sandboxes, backups and multi-instance deployments.</p></article>
+          </div>
+          <h3>Core object relationships</h3>
+          <div class="flow"><div>User</div><div>Workspace<br>Tenant</div><div>Agent<br>configuration</div><div>Session<br>execution</div><div>Events / Outputs</div></div>
+          <p>A user may belong to multiple Workspaces. The server implements a Workspace as a <code>tenant_id</code>; the same user can have different roles in different Workspaces. Agents, Sessions, Environments, Vaults, Memory Stores, Files, Model Cards and Eval Runs all carry the Workspace boundary, and the server queries them through the current tenant context.</p>
+        </section>
+
+        <section id="quickstart-en">
+          <h2>2. Quick start</h2>
+          <h3>2.1 First use for ordinary users</h3>
+          <ol><li>Open the OMA Console URL provided by the administrator.</li><li>Sign in with an account enabled by the administrator. Authentication is provided by better-auth; deployments can enable email/password, OTP and configured OIDC SSO.</li><li>Use the top Workspace switcher to select an existing Workspace or create a new one.</li><li>Go to Agents and create an Agent. At minimum, provide a name, model and system prompt.</li><li>Create a Session, select the Agent, Environment and optional resources, then send the first task.</li><li>In Session detail, review live events, Agent replies, tool calls, model calls and output files.</li></ol>
+          <div class="callout"><strong>Recommended first exercise</strong>Create a read-only analysis Agent, mount a test file, and ask it to “summarize the file and list key metrics” in a controlled Environment. Learn Session, event stream and output download first, then connect external resources.</div>
+          <h3>2.2 First deployment checks for administrators</h3>
+          <table><thead><tr><th>Check</th><th>Purpose</th><th>What to watch</th></tr></thead><tbody>
+            <tr><td>Authentication secret</td><td>Keep Cookie/session behavior durable</td><td><code>BETTER_AUTH_SECRET</code> must be stable and secret in production.</td></tr>
+            <tr><td>Public URL</td><td>Use the correct origin for cookies and OAuth callbacks</td><td>Set <code>PUBLIC_BASE_URL</code> in production; do not rely on development defaults.</td></tr>
+            <tr><td>Database</td><td>Persist users, tenants, resources and Session metadata</td><td>SQLite is the default; set <code>DATABASE_URL</code> to use PostgreSQL.</td></tr>
+            <tr><td>Model credentials</td><td>Allow Agents to call models</td><td>Prefer Workspace Model Cards; <code>ANTHROPIC_API_KEY</code> can be used as a fallback.</td></tr>
+            <tr><td>Sandbox</td><td>Isolate Agent tool execution</td><td><code>subprocess</code> is suitable for trusted development; production should evaluate litebox, Daytona, E2B or BoxRun.</td></tr>
+            <tr><td>Data directories and backup</td><td>Protect database, Memory, files and outputs</td><td>SQLite/local files need separate backup; multi-instance deployments should use PostgreSQL and shared object storage.</td></tr>
+          </tbody></table>
+        </section>
+
+        <section id="workspace-en">
+          <h2>3. Workspace, Tenant and permissions</h2>
+          <p class="section-intro">A Workspace is the work area users see in Console; the server implements it as a Tenant. It is not just a UI label, but the root boundary for resource and request isolation.</p>
+          <h3>3.1 User and Workspace relationship</h3>
+          <table><thead><tr><th>Concept</th><th>Meaning</th><th>Typical relationship</th></tr></thead><tbody>
+            <tr><td>User</td><td>Login identity</td><td>One User can join multiple Workspaces.</td></tr>
+            <tr><td>Workspace / Tenant</td><td>Resource isolation domain</td><td>One Workspace can contain multiple Users.</td></tr>
+            <tr><td>Membership</td><td>Association record between a User and Workspace</td><td>The same User can hold different roles in different Workspaces.</td></tr>
+            <tr><td><code>tenant_id</code></td><td>Server-side data isolation key</td><td>Usually corresponds to a Workspace ID; API calls must run in the correct active tenant context.</td></tr>
+          </tbody></table>
+          <h3>3.2 Roles</h3>
+          <table><thead><tr><th>Role</th><th>Allowed actions</th><th>Limits</th></tr></thead><tbody>
+            <tr><td><code>owner</code></td><td>Manage Workspace members, grant or revoke owner, and manage resources inside the Workspace.</td><td>Cannot remove the last owner.</td></tr>
+            <tr><td><code>admin</code></td><td>Add, modify and remove ordinary members; manage day-to-day Workspace resources.</td><td>Cannot grant or revoke owner.</td></tr>
+            <tr><td><code>member</code></td><td>Use visible Workspace resources and create/run tasks.</td><td>Cannot manage members.</td></tr>
+          </tbody></table>
+          <div class="callout warn"><strong>Important permission boundary</strong>The current code implements Workspace membership and role checks, but roles are not further decomposed into a per-resource <code>can_read</code>, <code>can_create</code>, <code>can_update</code>, <code>can_delete</code> permission matrix. Treat Workspace as the primary resource boundary and grant API Keys carefully.</div>
+          <h3>3.3 Console and API entry points</h3>
+          <ul><li>Workspace list: <span class="api">GET /v1/me/tenants</span></li><li>Create Workspace: <span class="api">POST /v1/tenants</span></li><li>Current user: <span class="api">GET /v1/me</span></li><li>List members: <span class="api">GET /v1/tenants/:tenantId/members</span></li><li>Add member: <span class="api">POST /v1/tenants/:tenantId/members</span></li><li>Change role: <span class="api">PATCH /v1/tenants/:tenantId/members/:userId</span></li><li>Remove member: <span class="api">DELETE /v1/tenants/:tenantId/members/:userId</span></li></ul>
+          <p>Member addition requires an existing user account in this OMA instance. Administrators can optionally set the system-wide <code>OMA_ALLOWED_EMAIL_DOMAINS</code> configuration to restrict which email domains may sign in through OIDC or be added to Workspaces. If SSO succeeds but the local user record has not been synchronized, “User account not found” can still appear.</p>
+        </section>
+
+        <section id="organization-en">
+          <h2>4. Organization Settings and organization defaults</h2>
+          <p class="section-intro">Organization Settings sit above Workspaces and define shared defaults for models, execution configuration, allowed Harnesses and security policies. They are not ordinary resources of a single Workspace.</p>
+          <h3>4.1 Console entry points</h3>
+          <p>The Console currently registers the following pages, although they may not always appear in the regular sidebar:</p>
+          <ul><li>Organization Settings: <code>/organization</code></li><li>Organization Workspaces: <code>/organization/workspaces</code></li></ul>
+          <p>If the sidebar does not show an entry, access these routes directly or ask an administrator to expose internal navigation links. The pages read <span class="api">GET /v1/oma/org/defaults</span> and <span class="api">GET /v1/oma/org/workspaces</span>.</p>
+          <h3>4.2 What Organization Settings display</h3>
+          <table><thead><tr><th>Setting</th><th>Meaning</th><th>Impact on Workspaces</th></tr></thead><tbody>
+            <tr><td>Default model</td><td>Organization default Model Card / model ID</td><td>Inherited when a Workspace has no default model of its own.</td></tr>
+            <tr><td>Execution profile</td><td>Default execution configuration, including sandbox worker, image strategy and environment config</td><td>Used as organization default when the Workspace has no default execution environment.</td></tr>
+            <tr><td>Allowed harnesses</td><td>List of Harness IDs allowed by the organization</td><td>Restricts which execution engines Workspaces can choose.</td></tr>
+            <tr><td>Default harness</td><td>Organization default Harness</td><td>Fallback source when Workspace/Agent do not explicitly specify one.</td></tr>
+            <tr><td>Allow BYOK</td><td>Whether Workspaces may bring their own model credentials</td><td>Controls whether Workspace provider keys can be configured.</td></tr>
+            <tr><td>Allow dedicated environment</td><td>Whether dedicated execution environments are allowed</td><td>Affects isolation and resource allocation policy.</td></tr>
+            <tr><td>Networking policy</td><td>Organization-level networking policy JSON</td><td>Policy source for effective Workspace settings.</td></tr>
+          </tbody></table>
+          <h3>4.3 Effective Workspace settings</h3>
+          <p>A Workspace can inspect its final effective configuration through <span class="api">GET /v1/oma/org/effective-settings</span>. Returned values distinguish their sources:</p>
+          <ul><li><code>workspace</code>: the Workspace configured its own model or execution environment and has higher priority.</li><li><code>org_default</code>: the Workspace lacks its own setting and inherits the organization default.</li><li><code>org_policy</code>: allowed Harness list, BYOK, dedicated environment and networking policy come from organization policy.</li><li><code>missing</code>: no usable default exists and an administrator must fill it in.</li></ul>
+          <p>If the organization configures a default execution profile, <span class="api">POST /v1/oma/org/apply-org-defaults</span> can materialize it as the Workspace default Environment. Availability depends on whether the current deployment provides the corresponding application service.</p>
+          <h3>4.4 Organization Workspaces</h3>
+          <p>The Organization Workspaces page shows Workspace name, ID, creation time, API Key count and tags across the organization. It supports search, Workspace creation, and switching into a selected Workspace to manage its API Keys. It is different from the Workspace Members page:</p>
+          <table><thead><tr><th>Page</th><th>Managed object</th><th>Typical use</th></tr></thead><tbody>
+            <tr><td>Workspace Members</td><td>User membership and role in the current Workspace</td><td>Invite, change role, remove member.</td></tr>
+            <tr><td>Organization Workspaces</td><td>Multiple Workspaces under the organization</td><td>Create/search Workspaces, inspect API Key count, switch management context.</td></tr>
+            <tr><td>Organization Settings</td><td>Organization defaults and policies</td><td>Govern models, execution environments, Harnesses and networking policy consistently.</td></tr>
+          </tbody></table>
+        </section>
+
+        <section id="agents-en">
+          <h2>5. Agent, Harness and ACP Proxy</h2>
+          <p class="section-intro">An Agent is a reusable “how to work” configuration, not one execution. A Harness is the Agent execution engine. ACP Proxy is a special execution mode that delegates the Agent loop to a connected local ACP runtime.</p>
+          <h3>5.1 Harness Catalog</h3>
+          <p>The Console <code>/harnesses</code> page is the Harness Catalog. It reads the deployed manifest from <span class="api">GET /v1/harnesses</span> and shows name, status, provider, version, installed/enabled state, capability support, native tools, compatibility and OMA tools.</p>
+          <table><thead><tr><th>Harness</th><th>Positioning</th><th>Best fit</th><th>Status</th></tr></thead><tbody>
+            <tr><td>Default OMA</td><td>Standard OMA agent loop</td><td>General business Agents, tool calls, file and Memory operations</td><td>stable</td></tr>
+            <tr><td>Strands</td><td>Agent loop backed by Strands Agents</td><td>Agents that need Strands execution semantics</td><td>beta</td></tr>
+            <tr><td>Deep Agents</td><td>Advanced loop with planning, skills and synchronous sub-Agent delegation</td><td>Complex analysis, task decomposition, multi-step planning</td><td>beta</td></tr>
+            <tr><td>ACP Proxy</td><td>Delegates to a registered local ACP runtime</td><td>Running Claude, Codex, OpenClaw or other ACP-compatible Agents on a user/team machine</td><td>experimental</td></tr>
+          </tbody></table>
+          <p class="small">The Catalog manifest is what the current deployment actually registered. If a harness is not installed, disabled or incompatible, do not select it based on name alone.</p>
+          <h3>5.2 How to choose a Harness</h3>
+          <table><thead><tr><th>Need</th><th>Prefer</th><th>Reason</th></tr></thead><tbody>
+            <tr><td>Standard OMA workflow running in an OMA-managed sandbox</td><td>Default OMA</td><td>The most stable compatibility surface and the safest default starting point.</td></tr>
+            <tr><td>Use the Strands execution model</td><td>Strands</td><td>Uses a Strands-backed loop. It is beta, so run regression checks first.</td></tr>
+            <tr><td>Native planning, <code>write_todos</code> and <code>task</code> sub-Agent tools</td><td>Deep Agents</td><td>Console exposes native tools and tool configuration; suitable for complex work.</td></tr>
+            <tr><td>Call a local Claude/Codex/other ACP Agent installed on a machine</td><td>ACP Proxy</td><td>Execution occurs on the Local Runtime-bound machine and does not use an OMA isolated sandbox.</td></tr>
+          </tbody></table>
+          <div class="callout warn"><strong>Selection principle</strong>Choose by “execution location” first, then by “Agent capability”: choose Default/Strands/Deep Agents when you need an OMA-managed isolated environment; choose ACP Proxy when you need a local ACP Agent. Do not treat ACP Proxy as a normal sandbox harness.</div>
+          <h3>5.3 Harness configuration when creating an Agent</h3>
+          <p>Select the Harness in the Agent create/edit dialog. Ordinary harnesses are saved as Agent <code>_oma.harness</code> and optional <code>_oma.harness_config</code>. Deep Agents can configure tool switches. ACP Proxy also requires runtime binding, including <code>runtime_id</code> and <code>acp_agent_id</code>. If ACP Proxy only has a partial binding, the current implementation falls back to ordinary OMA loop semantics; confirm both fields are configured.</p>
+          <h3>5.4 Agent configuration fields</h3>
+          <table><thead><tr><th>Field</th><th>Purpose</th><th>Recommendation</th></tr></thead><tbody>
+            <tr><td>Name / Description</td><td>Identify the Agent and its use case</td><td>Name with the business purpose, for example “Supplier Invoice Analysis”.</td></tr>
+            <tr><td>Model</td><td>Main model identifier</td><td>Select a Workspace Model Card or supported model ID.</td></tr>
+            <tr><td>System</td><td>Role, rules and output format</td><td>State input assumptions, prohibited actions, failure handling and output template.</td></tr>
+            <tr><td>Tools</td><td>Enable built-in or custom tools</td><td>Follow least privilege and enable only the tools the task needs.</td></tr>
+            <tr><td>MCP Servers</td><td>Connect external MCP services</td><td>Use Vault for credentials; do not put tokens in prompts.</td></tr>
+            <tr><td>Skills</td><td>Reuse prompt fragments and skill files</td><td>Put stable domain rules into versionable Skills.</td></tr>
+            <tr><td>Callable Agents</td><td>Delegate to other Agents</td><td>Define the child Agent responsibility, input and output contract clearly.</td></tr>
+            <tr><td>Environment</td><td>Selected through Session creation</td><td>Keep dependencies, networking and isolation policy in Environment instead of scattered in Agent prompts.</td></tr>
+          </tbody></table>
+          <h3>5.5 Agent lifecycle</h3>
+          <p>Create → use → update (new version) → archive. Archive is soft-delete semantics so historical Sessions keep their configuration context. Console provides Agent list, create, edit, version view and archive; APIs are:</p>
+          <p><span class="api">POST /v1/agents</span> <span class="api">GET /v1/agents</span> <span class="api">GET /v1/agents/:id</span> <span class="api">PUT /v1/agents/:id</span> <span class="api">GET /v1/agents/:id/versions</span> <span class="api">POST /v1/agents/:id/archive</span></p>
+          <h3>5.6 Business Agent drafting and Agent Packages</h3>
+          <p>The Business Agent creation flow can turn a business description into a draft. Review the Agent name, model, system prompt, tools and resource bindings before saving. Draft output is an authoring aid, not a substitute for review, especially when external systems, credentials or notifications are involved.</p>
+          <p>An Agent Package is a portable multi-Agent configuration. It supports drafts, validation, immutable revisions, Skill references, managed files, MCP configuration and callable-Agent relationships. Publishing creates formal OMA Agents in the current Workspace and preserves package/revision metadata. Credential requirements remain deployment metadata; secrets are not copied into Agent records.</p>
+          <p><span class="api">POST /v1/agent-packages</span> <span class="api">GET /v1/agent-packages</span> <span class="api">PUT /v1/agent-packages/:id</span> <span class="api">POST /v1/agent-packages/:id/validate</span> <span class="api">POST /v1/agent-packages/:id/publish</span></p>
+        </section>
+
+        <section id="sessions-en">
+          <h2>6. Session and Agent execution</h2>
+          <p class="section-intro">A Session is a recoverable Agent conversation and execution instance with an append-only event log. Business users usually only need to create a Session, send messages, wait for state changes and review outputs.</p>
+          <h3>6.1 Execution flow</h3>
+          <div class="flow"><div>Create Session</div><div>Send Message</div><div>Agent calls model/tools</div><div>Live Events</div><div>Idle / Output</div></div>
+          <h3>6.2 Environment differences when creating a Session</h3>
+          <table><thead><tr><th>Agent type</th><th>Environment field at Session creation</th><th>Actual execution location</th><th>Notes</th></tr></thead><tbody>
+            <tr><td>Default / Strands / Deep Agents</td><td>Select <code>environment_id</code> or use the server default Environment</td><td>OMA-managed sandbox / environment worker</td><td>Environment controls dependencies, networking and isolation; files, Memory, Vault and other resources mount into this execution environment.</td></tr>
+            <tr><td>ACP Proxy</td><td>Environment selector is disabled; no <code>environment_id</code> is submitted</td><td>Local Runtime machine bound to the Agent</td><td>The Session uses the Agent <code>runtime_binding</code> and displays runtime plus ACP agent; it does not use an isolated sandbox environment.</td></tr>
+          </tbody></table>
+          <div class="callout"><strong>Console hint</strong>After selecting an ACP Proxy Agent, the New Session dialog shows “runs on local runtime” and the ACP agent identity, while the Environment input is disabled. Selecting another Agent restores the Environment selector and validation.</div>
+          <h3>6.3 Common statuses</h3>
+          <table><thead><tr><th>Status</th><th>Meaning</th><th>User action</th></tr></thead><tbody>
+            <tr><td>idle</td><td>Waiting for input or the current turn has completed</td><td>You can send the next message.</td></tr>
+            <tr><td>running</td><td>Running model calls or tools</td><td>Wait, review live events, interrupt if needed.</td></tr>
+            <tr><td>rescheduled</td><td>Waiting for execution environment or sandbox preparation</td><td>Check Environment/Runtime status.</td></tr>
+            <tr><td>terminated</td><td>Explicitly ended or failed unrecoverably</td><td>Create a new Session or inspect error events.</td></tr>
+          </tbody></table>
+          <h3>6.4 Results and review</h3>
+          <ul><li>Session events can be watched in Console or through SSE.</li><li>Trajectory shows Agent messages, tool calls and tool results in time order.</li><li>Model call detail can be traced to specific LLM call events.</li><li>A Session can mount File, GitHub Repository, Memory Store and other resources.</li><li>Output files are read and downloaded through Session outputs.</li></ul>
+          <p><span class="api">POST /v1/sessions</span> <span class="api">POST /v1/sessions/:id/messages</span> <span class="api">GET /v1/sessions/:id/events/stream</span> <span class="api">GET /v1/sessions/:id/trajectory</span> <span class="api">GET /v1/sessions/:id/outputs</span></p>
+        </section>
+
+        <section id="resources-en">
+          <h2>7. Resources management</h2>
+          <h3>7.1 Environment</h3>
+          <p>Environment defines sandbox dependencies and networking policy. It can configure Python, npm, apt, cargo, gem and Go packages plus networking rules. After creation, it can be selected by Sessions. Built-in environments can be initialized through bootstrap entry points.</p>
+          <p><span class="api">POST /v1/environments</span> <span class="api">GET /v1/environments</span> <span class="api">GET /v1/environments/:id</span> <span class="api">POST /v1/environments/:id/archive</span></p>
+          <h3>7.2 Files</h3>
+          <p>Files are used to upload input files and store reusable file metadata. Sessions can mount files into sandbox paths. Production deployments must back up both database metadata and the actual blob content.</p>
+          <h3>7.3 Memory Stores</h3>
+          <p>A Memory Store is persistent memory across Sessions. Memory is organized by path and supports list, read, create, update, delete, version history, CAS conditional writes and historical version redact. Console provides Memory Store list, detail, content editing and version operations.</p>
+          <ul><li>Recommended paths: <code>/preferences/formatting.md</code>, <code>/projects/project-a/notes.md</code>.</li><li>Use <code>precondition: not_exists</code> to prevent first-create overwrite.</li><li>Use <code>content_sha256</code> for concurrent write protection.</li><li>Redacting a version removes sensitive content while preserving the audit row; the current live head cannot be redacted directly.</li><li>Mount through Session resources at <code>/mnt/memory/&lt;store_name&gt;/</code>.</li></ul>
+          <h3>7.4 Credential Vaults</h3>
+          <p>Vault stores credentials such as MCP OAuth, static Bearer tokens and command secrets. The design goal is that credentials do not enter the Agent sandbox; the outbound proxy injects them after matching URL or command. Vaults and Credentials belong to the current Workspace.</p>
+          <p><span class="api">POST /v1/vaults</span> <span class="api">GET /v1/vaults</span> <span class="api">POST /v1/vaults/:id/credentials</span> <span class="api">POST /v1/vaults/:id/archive</span></p>
+          <div class="callout limit"><strong>Security requirement</strong>Do not put API tokens, passwords or OAuth refresh tokens into Agent system prompts, Skill files, Memory or ordinary Files. Use Vault instead, and revoke credentials that are no longer needed after testing.</div>
+          <h3>7.5 Skills and MCP</h3>
+          <p>Skills are reusable prompt fragments and files, supporting upload, list, version and delete. MCP entry points support connection probing and credential matching. Skills fit stable domain knowledge; Memory fits persistent information that changes with tasks; Vault fits secrets.</p>
+          <h3>7.6 Resource visibility and access review</h3>
+          <p>Resources can be private to their creator or visible within the Workspace according to the current access policy. Console provides a workspace access inventory and highlights resources requiring review. Members can create private Agents, Skills and Memory Stores when permitted; owners and admins manage the Workspace-level visibility and permissions policy.</p>
+        </section>
+
+        <section id="models-en">
+          <h2>8. Models, Model Cards and runtimes</h2>
+          <h3>8.1 Model Card</h3>
+          <p>A Model Card binds provider, model ID, base URL and API key into a Workspace-level model configuration. Agents reference it through the model identifier; the server resolves it in the current Workspace and uses the corresponding credentials. Console supports create, list, edit, delete, probe and key-status inspection.</p>
+          <p><span class="api">POST /v1/model_cards</span> <span class="api">GET /v1/model_cards</span> <span class="api">POST /v1/model_cards/probe</span> <span class="api">POST /v1/model_cards/:id/probe</span></p>
+          <h3>8.2 Model resolution priority</h3>
+          <ol><li>The Agent-specified model matches a Model Card in the current Workspace.</li><li>The Workspace default Model Card.</li><li>Organization default model configuration, if enabled by the deployment.</li><li>The server fallback <code>ANTHROPIC_API_KEY</code> configuration.</li></ol>
+          <div class="callout warn"><strong>Production recommendation</strong>Put model credentials for each business Workspace into Model Cards instead of sharing one global fallback key across all Workspaces. This makes rotation, audit and future Workspace-level usage attribution easier.</div>
+          <h3>8.3 Local Runtimes, ACP Bridge and Sandboxes</h3>
+          <p>This section describes two execution paths that are easy to confuse:</p>
+          <table><thead><tr><th>Component</th><th>Role</th><th>Related Harness / Session</th></tr></thead><tbody>
+            <tr><td>Local Runtime / OMA Bridge</td><td>Registers an ACP-compatible Agent on a user or team machine into OMA and provides a local execution channel.</td><td>ACP Proxy Agent; Session runs on the runtime-bound machine.</td></tr>
+            <tr><td>Sandbox Worker</td><td>Claims Environment work on an independent Linux node, creates/manages OpenShell sandbox, and reports status, results and heartbeats.</td><td>Sandbox-backed Sessions such as Default / Strands / Deep Agents.</td></tr>
+            <tr><td>Embedded worker</td><td>Execution worker running inside the main-node process.</td><td>Suitable for single-binary or simpler deployments; no extra sandbox-worker process required.</td></tr>
+            <tr><td>Sandboxes Console</td><td>Displays sandbox lifecycle and worker observability information.</td><td>For operations visibility; not the entry point for creating ACP runtimes.</td></tr>
+          </tbody></table>
+          <h4>OMA Bridge setup (ACP Proxy path)</h4>
+          <ol><li>On the machine that will run the local Agent, execute <code>npx @openma/cli@beta bridge setup</code>.</li><li>Complete the OAuth/pairing flow. The CLI writes credentials to <code>~/.oma/bridge/</code> and can install a background daemon.</li><li>The daemon scans ACP-compatible Agents on the machine <code>$PATH</code> and reports the runtime plus ACP agents to OMA.</li><li>Confirm heartbeat in Console Local Runtimes, then create an ACP Proxy Agent bound to that runtime.</li></ol>
+          <p class="small">Common ACP Agents include claude-acp, codex-acp, openclaw and hermes. The actual list depends on the daemon’s current scan and ACP registry result. Use <code>OMA_BRIDGE_DEBUG_ACP=1</code> for debugging and <code>OMA_BRIDGE_ONPREM_RUNTIME=1</code> for On-Prem runtime mode.</p>
+          <h4>Sandbox Worker (isolated sandbox path)</h4>
+          <ol><li>Create or select an Environment in OMA.</li><li>Mint a worker key for that Environment through <span class="api">POST /v1/environments/:environmentId/worker_keys</span>.</li><li>Deploy <code>apps/sandbox-worker</code> on the Linux sandbox node and set <code>OMA_BASE_URL</code>, <code>OMA_ENVIRONMENT_ID</code>, <code>OMA_ENVIRONMENT_KEY</code> and <code>OMA_WORKER_NAME</code>.</li><li>Set runner/provider, for example <code>OMA_WORKER_RUNNER=openshell</code> and <code>SANDBOX_PROVIDER=openshell</code>, and configure image, policy and gateway.</li><li>Start the worker. It polls work, acknowledges, heartbeats and reports result/failure. The Environment Detail page shows worker keys and startup hints.</li></ol>
+          <pre>OMA_BASE_URL=http://oma-control.internal:8787
+OMA_ENVIRONMENT_ID=env_xxx
+OMA_ENVIRONMENT_KEY=oma_env_xxx
+OMA_WORKER_NAME=sandbox-linux-01
+OMA_WORKER_RUNNER=openshell
+SANDBOX_PROVIDER=openshell
+OPENSHELL_GATEWAY=local
+OPENSHELL_IMAGE=ant-worker:1.9.2</pre>
+          <h4>main-node execution mode</h4>
+          <p><code>OMA_EXECUTION_MODE</code> controls execution ownership: <code>embedded</code> is handled by the main-node embedded worker, <code>external</code> is handled by the external sandbox-worker fleet, and <code>legacy</code> exists for older paths. In external mode, main-node and sandbox-worker must use the same OMA URL, the correct Environment worker key and reachable work APIs.</p>
+          <p><span class="api">GET /v1/runtimes</span> <span class="api">POST /v1/runtimes/enroll</span> <span class="api">POST /v1/runtimes/:id/heartbeat</span> <span class="api">GET /v1/sandboxes</span> <span class="api">GET /v1/environments/:id/workers</span></p>
+        </section>
+
+        <section id="evals-en">
+          <h2>9. Evaluations, integrations and advanced capabilities</h2>
+          <h3>9.1 Eval Runs</h3>
+          <p>An Eval Run is a <strong>reproducible Agent evaluation batch</strong>: it uses a selected Agent and Environment, executes a set of tasks, collects complete Session trajectories and decides pass/fail through Reward rules. It is intended for Agent regression tests, model/prompt acceptance, tool-call validation and pre-release stability checks.</p>
+          <div class="callout"><strong>One-sentence model:</strong>A Session is one real conversation; an Eval Run is a batch of automated tests; a Task is one test scenario; a Trial is one independent execution of that scenario.</div>
+          <h4>9.1.1 Core objects</h4>
+          <table><thead><tr><th>Object</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
+            <tr><td>Eval Run</td><td>One evaluation batch bound to one Agent, one Environment and multiple Tasks.</td><td>Validate four capabilities of a customer-service Agent.</td></tr>
+            <tr><td>Task</td><td>A test scenario with task ID, one or more messages, optional setup, timeout and Reward.</td><td>Ask the Agent to use bash to output a fixed marker.</td></tr>
+            <tr><td>Trial</td><td>One independent run of a Task, with its own Session, event stream and trajectory.</td><td>Run the same Task three times to observe stability.</td></tr>
+            <tr><td>Trajectory</td><td>The complete evaluation trace saved after Trial completion, including messages, thinking/tool events, status, model calls and token usage.</td><td>Used for review, scoring and later comparison.</td></tr>
+          </tbody></table>
+          <p><strong>Task vs Trial:</strong>A Task is “what to test”; a Trial is “one actual execution.” With <code>trials: 3</code>, one Task creates three independent Sessions and the final view can show pass counts such as <code>2/3</code>.</p>
+          <h4>9.1.2 How to use</h4>
+          <p>For On-Premise, the recommended current path is to create Eval Runs through the API or the repository smoke-test scripts. Console is mainly for list view, status monitoring, Task/Trial expansion and trajectory/reward inspection.</p>
+          <pre>POST /v1/evals/runs
+x-api-key: &lt;workspace-api-key&gt;
+content-type: application/json
+
+{
+  "agent_id": "agent_xxx",
+  "environment_id": "env_xxx",
+  "tasks": [{
+    "id": "bash-check",
+    "messages": ["Use bash to run: printf OMA_OK"],
+    "trials": 1,
+    "timeout_ms": 3600000,
+    "reward": {
+      "type": "verifiable",
+      "scorer": "bashOutputMarker",
+      "opts": { "marker": "OMA_OK" }
+    }
+  }]
+}</pre>
+          <p>Successful creation returns a <code>run_id</code>. Poll <span class="api">GET /v1/evals/runs/:id</span> until the Run becomes <code>completed</code> or <code>failed</code>. The repository provides a shortcut script:</p>
+          <pre>$env:OMA_API_URL = "http://localhost:8787"
+$env:OMA_API_KEY = "oma_..."
+$env:OMA_AGENT_ID = "agent_..."
+$env:OMA_ENV_ID = "env_..."
+node scripts/eval-smoke/run.mjs all</pre>
+          <p>The API key automatically determines the current Workspace/Tenant; no extra <code>tenant_id</code> is required. The Environment must be <code>ready</code>, and the embedded worker or external sandbox-worker must be running normally.</p>
+          <h4>9.1.3 Reward and pass judgment</h4>
+          <p>A Reward scores one Trial result, usually normalized from <code>0</code> to <code>1</code>. It is not model token cost and not the Agent’s own claim of success; it is the result of platform verifier/scorer logic over the trajectory.</p>
+          <table><thead><tr><th>Reward type</th><th>Purpose</th><th>Typical configuration</th></tr></thead><tbody>
+            <tr><td>No Reward</td><td>Only verify the Session completed successfully.</td><td>Pass when the Trial reaches idle with no error.</td></tr>
+            <tr><td><code>verifiable</code></td><td>Use built-in scorers to inspect messages, tools or bash output.</td><td><code>agentMessageContains</code>, <code>bashOutputMarker</code>, <code>fileWritten</code>, <code>toolUsed</code>, <code>idleNoError</code>.</td></tr>
+            <tr><td><code>script</code></td><td>Run a verification script inside the Trial sandbox; exit code 0 means pass.</td><td>Run tests or inspect generated files.</td></tr>
+            <tr><td><code>composite</code></td><td>Combine multiple verifiers and calculate a weighted total score.</td><td>Require both successful bash execution and output containing a target marker.</td></tr>
+          </tbody></table>
+          <p>Console Pass rate is passed Trials divided by total Trials. Reward breakdown shows finer scoring reasons from the trajectory. Reward 0 does not necessarily mean the Session crashed; the Agent may have completed execution without satisfying the scoring condition.</p>
+          <h4>9.1.4 On-Premise background execution model</h4>
+          <div class="flow"><div>POST Eval Run</div><div>main-node scheduler</div><div>Create independent Session</div><div>embedded / external worker</div><div>Collect trajectory</div><div>verifier / reward</div><div>Complete Run</div></div>
+          <ol><li>The API writes the initial Run and Task/Trial states to the main database.</li><li>The main-node Eval Runner periodically scans <code>pending/running</code> Runs.</li><li>Each Trial creates an independent Session and sends the Task’s first message; multiple messages are sent sequentially.</li><li>The Session executes its Harness through the configured embedded or external execution plane.</li><li>After the Session enters <code>idle</code>, the Runner reads events and full-status and builds a trajectory.</li><li>The verifier scores according to the Reward configuration, updates Trial, Task and Run state, and saves the trajectory.</li></ol>
+          <div class="callout warn"><strong>About duration:</strong>The default <code>EVAL_TICK_CRON="* * * * *"</code> advances once per minute. A model may finish quickly, but the Runner may wait until the next tick to discover idle, send the next message or complete scoring. Therefore roughly 1 to 2 minutes for a single-message Task, and one additional tick for a multi-message Task, are expected under the polling architecture and do not imply model latency. Test deployments may use <code>EVAL_TICK_CRON="*/10 * * * * *"</code> after weighing database and worker load.</div>
+          <h4>9.1.5 Status and troubleshooting</h4>
+          <table><thead><tr><th>Symptom</th><th>Check first</th></tr></thead><tbody>
+            <tr><td>Run stays pending for a long time</td><td>Whether the main-node scheduler is started and <code>EVAL_TICK_CRON</code> is valid.</td></tr>
+            <tr><td>Trial stays running for a long time</td><td>Whether the Session is idle; inspect embedded worker/external worker logs and Environment status.</td></tr>
+            <tr><td>Session completed but Eval did not</td><td>Confirm the main-node version includes Eval adapter support for <code>/status</code>, <code>/events</code> and <code>/full-status</code>.</td></tr>
+            <tr><td>Session completed but Reward is 0</td><td>Inspect Reward breakdown, trajectory and verifier match conditions, not just Session status.</td></tr>
+          </tbody></table>
+          <p><span class="api">POST /v1/evals/runs</span> <span class="api">GET /v1/evals/runs</span> <span class="api">GET /v1/evals/runs/:id</span> <span class="api">DELETE /v1/evals/runs/:id</span></p>
+          <h4>9.1.6 Evaluation Plans, review gates and Temporal</h4>
+          <p>Evaluation Plans organize reusable cases, references and revisions. A published Plan can run through the Temporal execution path, which exposes live case progress and preserves evidence for later review. Review gates can pause promotion until the required evidence or reviewer decision is available. Treat cases suggested by OMA as proposals: inspect prompts, fixtures and assertions before publishing.</p>
+          <p>Workflow Runs can be deleted only after reaching a terminal state; deletion also performs cascading cleanup. If a run is still active, cancel it and wait for the terminal status before retrying deletion.</p>
+          <h3>9.2 Enterprise integrations</h3>
+          <p>The current Console navigation provides Linear, GitHub and Slack integration entries. Integrations generally include OAuth authorization, installation/binding, publishing or webhook callbacks. Actual availability depends on provider applications, callback URLs and secrets configured by administrators.</p>
+          <h3>9.3 Usage, cost and notifications</h3>
+          <p>Workspace administrators can open <code>/usage</code> to review token usage and estimated cost. Reports support time ranges, hourly/daily/monthly buckets, and grouping or filtering by API Key, account, app, Workspace and model. Cost values are estimates based on the configured model price table, not provider invoices.</p>
+          <p>Notification Settings at <code>/notification-settings</code> manages SMTP and Slack/Teams webhook destinations. Scheduled Agent Runs can notify on success, failure or every run, include execution results, and record delivery history. The <code>send_notification</code> Agent tool is opt-in and confirmation-bound by default; bind only approved destinations to an Agent version.</p>
+          <p><span class="api">GET /v1/oma/analytics/usage_report</span> <span class="api">GET /v1/oma/analytics/cost_report</span> <span class="api">GET /v1/notification-settings/smtp</span> <span class="api">GET /v1/notification-settings/endpoints</span></p>
+          <h3>9.4 Dreams and asynchronous jobs</h3>
+          <div class="callout warn"><strong>Console visibility</strong>The current Console has no Dreams page. Dreams are an API/SDK capability provided by the On-Premise server.</div>
+          <p><strong>What is a Dream:</strong>a background Memory curation job. It reads an existing Memory Store, optionally references several Sessions, calls a model to merge duplicate memories, clean outdated content and distill recurring patterns, then creates a new Curated Memory Store. It usually does not overwrite the original Memory Store directly.</p>
+          <div class="flow"><div>Source Memory Store</div><div>Optional Session context</div><div>Model curation</div><div>New Memory Store</div><div>Future Agent use</div></div>
+          <p><strong>Lifecycle:</strong><code>pending → running → completed / failed / canceled</code>. The create API returns quickly and clients must query Dream status. After completion, read the curated result from <code>outputs[].memory_store_id</code>.</p>
+          <p><strong>Input requirements:</strong>one Memory Store is required. Sessions are optional and must belong to the current Workspace. The current implementation mainly provides Session IDs and titles to the curator rather than full conversation transcripts, so Dreams currently rely primarily on Memory Store content.</p>
+          <p><strong>Current limits:</strong>supported models are <code>claude-opus-4-7</code> and <code>claude-sonnet-4-6</code>; a Dreams beta header is required; there is no Console usage/dashboard; Dreams are not a general-purpose task orchestrator.</p>
+          <p><span class="api">POST /v1/dreams</span> <span class="api">GET /v1/dreams</span> <span class="api">GET /v1/dreams/:id</span> <span class="api">POST /v1/dreams/:id/cancel</span> <span class="api">POST /v1/dreams/:id/archive</span></p>
+        </section>
+
+        <section id="api-en">
+          <h2>10. API, authentication and CLI</h2>
+          <h3>10.1 Authentication methods</h3>
+          <table><thead><tr><th>Method</th><th>Use case</th><th>Notes</th></tr></thead><tbody>
+            <tr><td>Cookie session</td><td>Console and browser operations</td><td>Managed by better-auth; suitable for interactive sign-in.</td></tr>
+            <tr><td>API Key</td><td>Service-to-service, scripts and SDK</td><td>Mint/list/revoke per Workspace; plaintext key is shown only once.</td></tr>
+            <tr><td>CLI token</td><td>OMA CLI login</td><td>Created through <code>/v1/me/cli-tokens</code> and reuses API Key storage.</td></tr>
+            <tr><td>OIDC SSO</td><td>External identity provider</td><td>Requires discovery URL, client credentials and redirect URI. An optional system-wide email-domain allowlist is configured with <code>OMA_ALLOWED_EMAIL_DOMAINS</code>.</td></tr>
+          </tbody></table>
+          <h3>10.2 Minimal API examples</h3>
+          <pre># List current user's Workspaces
+curl "$OMA_BASE_URL/v1/me/tenants" \
+  -H "Cookie: $OMA_SESSION_COOKIE"
+
+# Create API Key (the plaintext key should be saved securely once)
+curl -X POST "$OMA_BASE_URL/v1/api_keys" \
+  -H "Authorization: Bearer $OMA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"analysis-automation"}'
+
+# Create Agent
+curl -X POST "$OMA_BASE_URL/v1/agents" \
+  -H "x-api-key: $OMA_API_KEY" \
+  -H "x-active-tenant: $WORKSPACE_ID" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"File Analyst","model":"claude-sonnet-4-6","system":"Analyze input files and return conclusions."}'
+
+# Read SSE event stream
+curl -N "$OMA_BASE_URL/v1/sessions/$SESSION_ID/events/stream" \
+  -H "x-api-key: $OMA_API_KEY" \
+  -H "x-active-tenant: $WORKSPACE_ID"</pre>
+          <h3>10.3 API usage principles</h3>
+          <ul><li>All automation requests should carry the correct fixed Workspace context; do not rely on the user’s last Console selection.</li><li>Use separate API Keys for different business domains so revocation, rotation and caller tracing stay simple.</li><li>Do not commit API Keys to Git, write them to logs or place them in Memory.</li><li>For long-running tasks, prefer SSE or Session-status polling instead of repeatedly creating new Sessions at high frequency.</li></ul>
+        </section>
+
+        <section id="operations-en">
+          <h2>11. On-Premise deployment and operations</h2>
+          <h3>11.1 Storage modes</h3>
+          <table><thead><tr><th>Component</th><th>Default / optional implementation</th><th>Operations recommendation</th></tr></thead><tbody>
+            <tr><td>Main database</td><td>SQLite; PostgreSQL when <code>DATABASE_URL</code> is set</td><td>SQLite is acceptable for single-instance deployment; prefer PostgreSQL for multi-instance.</td></tr>
+            <tr><td>Authentication database</td><td>better-auth uses a separate auth database path or PG</td><td>Back it up with main data and keep the secret stable.</td></tr>
+            <tr><td>Memory blob</td><td>Local filesystem; also supports S3-compatible storage</td><td>Use shared directories or <code>MEMORY_S3_*</code> in multi-instance deployments and enable polling sync.</td></tr>
+            <tr><td>Files / outputs</td><td>Local or S3-compatible blob storage</td><td>Database backup is not file-content backup; protect both separately.</td></tr>
+            <tr><td>Sandbox</td><td>subprocess, litebox, daytona, e2b, boxrun</td><td>Choose based on code trust, isolation needs and infrastructure.</td></tr>
+          </tbody></table>
+          <h3>11.2 Key environment variables</h3>
+          <pre>DATABASE_URL=postgres://oma:password@postgres:5432/oma
+BETTER_AUTH_SECRET=&lt;stable-random-secret&gt;
+PUBLIC_BASE_URL=https://oma.internal.example
+ANTHROPIC_API_KEY=&lt;fallback-only-key&gt;
+ANTHROPIC_BASE_URL=https://api.anthropic.com
+SANDBOX_PROVIDER=litebox
+MEMORY_BLOB_DIR=./data/memory-blobs
+# In multi-instance/object-storage mode, set according to the real environment:
+# MEMORY_S3_ENDPOINT, MEMORY_S3_BUCKET, MEMORY_S3_ACCESS_KEY,
+# MEMORY_S3_SECRET_KEY, MEMORY_S3_REGION, MEMORY_S3_POLL_INTERVAL_SEC</pre>
+          <p class="small">These variable names come from the On-Premise runtime code and deployment documents. Real production values, secrets and callback URLs should be injected by administrators through a secure configuration system.</p>
+          <h3>11.3 Backup and recovery</h3>
+          <ol><li>SQLite: stop the service, then back up the database file, auth database, Memory blob and Files/output directories.</li><li>PostgreSQL: use a consistent snapshot or <code>pg_dump</code>, and back up object storage at the same time.</li><li>After recovery, verify sign-in, Workspace list, Agents, Session history, Memory content and Vault metadata.</li><li>Practice recovery periodically; do not only verify that backup files “exist.”</li></ol>
+        </section>
+
+        <section id="limits-en">
+          <h2>12. Current version boundaries and unsupported capabilities</h2>
+          <p class="section-intro">The following items are product boundaries of the current On-Premise code, not user errors. They are documented here so users do not assume capabilities exist when they do not.</p>
+          <table><thead><tr><th>Capability</th><th>Current state</th><th>Impact</th></tr></thead><tbody>
+            <tr><td>Workspace / Tenant isolation</td><td>Implemented</td><td>Resources are queried by <code>tenant_id</code>; Console supports Workspace switching.</td></tr>
+            <tr><td>Membership / Role</td><td>Implemented</td><td>owner/admin/member management page and APIs are available; an optional system-wide email-domain allowlist is configured with <code>OMA_ALLOWED_EMAIL_DOMAINS</code>.</td></tr>
+            <tr><td>Fine-grained Permission matrix</td><td>Not fully implemented</td><td>No administrator-facing per-resource read/create/update/delete policy editor.</td></tr>
+            <tr><td>Workspace-level usage dashboard</td><td>Implemented with estimates</td><td>Console provides Usage &amp; Cost reports with token dimensions and model-based estimated cost.</td></tr>
+            <tr><td>Token/cost metering</td><td>Usage ledger and estimated cost implemented</td><td>Reports are operational estimates, not provider invoices or a financial settlement system.</td></tr>
+            <tr><td>Quota / Budget / Alert</td><td>No complete Workspace management surface observed</td><td>Usage reporting exists, but administrators still need providers, gateways or external monitoring for hard quotas and budget alerts.</td></tr>
+            <tr><td>Complete audit backend</td><td>Partial capabilities exist in events, versions and runtime logs</td><td>Not yet equivalent to a unified audit center for members, resources, credentials and permissions.</td></tr>
+          </tbody></table>
+          <div class="callout limit"><strong>How to read “implemented”</strong>Having <code>tenant_id</code> on resources does not automatically mean enterprise permission governance is complete. Before production rollout, define Workspace owners, business-domain owners, API Key lifecycle, model-cost ownership and offboarding procedures.</div>
+        </section>
+
+        <section id="troubleshooting-en">
+          <h2>13. Troubleshooting</h2>
+          <h3>No Workspace after login</h3><p>Confirm the user has created or joined a Workspace. Check browser cookies, <code>PUBLIC_BASE_URL</code> and whether the authentication database points to the expected instance.</p>
+          <h3>Adding a member shows User account not found</h3><p>Confirm the target user has signed in and exists in this On-Premise instance user directory. If <code>OMA_ALLOWED_EMAIL_DOMAINS</code> is set, confirm the email domain is on the system-wide allowlist. An identity existing in the IdP does not mean the local user table already has a record.</p>
+          <h3>Agent cannot call the model</h3><p>Check whether the Agent model ID matches a Workspace Model Card. Use Model Card probe. Confirm base URL, provider, key and network egress. If no Model Card exists, then check the server fallback <code>ANTHROPIC_API_KEY</code>.</p>
+          <h3>Session stays rescheduled for a long time</h3><p>Check whether the Environment is ready, Runtime is enrolled/heartbeat healthy, worker can claim work, and the external configuration required by <code>SANDBOX_PROVIDER</code> is present.</p>
+          <h3>Memory is visible in Console but not synchronized in sandbox</h3><p>In local mode, check <code>MEMORY_BLOB_DIR</code>, file permissions and watcher. In S3 mode, check all connection parameters, bucket prefix and poll interval, and confirm multi-instance deployments use shared object storage.</p>
+          <h3>Live events do not refresh</h3><p>Check the SSE connection, whether the reverse proxy allows long-lived connections, and whether API Key plus active tenant are correct. In PostgreSQL multi-instance scenarios, check event fanout dependencies.</p>
+          <h3>Security incident handling</h3><p>If an API Key or Vault credential leaks, revoke/rotate it immediately, inspect related Sessions, model calls and integration logs, then follow the enterprise incident response process. Do not only delete the display name in Console.</p>
+        </section>
+
+        <footer>
+          <p><strong>Document note:</strong>This file is compiled from the current repository’s <code>apps/main-node</code>, <code>apps/console</code>, <code>packages/http-routes</code>, On-Premise deployment documentation and related storage/execution code. During deployment, actual version, environment variables and administrator configuration are authoritative.</p>
+          <p>Recommended reading order: ordinary users should read sections 2, 5, 6 and 7; analysts should read 6, 7, 8 and 9; developers should read 3, 6 and 10; administrators should read 4, 8, 11, 12 and 13.</p>
+        </footer>
+      </main>
+      <main data-doc-language="zh" hidden>
+        <section id="scope">
+          <h2>1. 范围与定位</h2>
+          <p class="section-intro">本手册只描述企业内网部署的 On-Premise OMA。文中“服务端”指 <code>apps/main-node</code>，前端指 OMA Console；托管平台专属的 Worker、Durable Object、D1、R2 和托管计费流程不属于本手册。</p>
+          <div class="grid">
+            <article class="card"><h3>对业务人员</h3><p>选择工作区、创建或使用 Agent、发送任务、查看进度与输出，不需要理解数据库或容器细节。</p></article>
+            <article class="card"><h3>对分析师</h3><p>可以上传文件、挂载 Memory Store、配置模型和环境，并通过 Session 事件与输出复盘过程。</p></article>
+            <article class="card"><h3>对开发者</h3><p>可以使用 REST API、SSE、SDK、API Key 和 CLI token，把 OMA 接入内部系统或自动化流程。</p></article>
+            <article class="card"><h3>对管理员</h3><p>负责认证、Workspace、成员角色、模型凭据、运行时、沙箱、备份和多实例部署。</p></article>
+          </div>
+          <h3>核心对象关系</h3>
+          <div class="flow"><div>User<br>用户</div><div>Workspace<br>Tenant</div><div>Agent<br>配置</div><div>Session<br>执行实例</div><div>Events / Outputs<br>过程与结果</div></div>
+          <p>一个用户可以属于多个 Workspace。Workspace 在服务端以 <code>tenant_id</code> 表示；同一用户在不同 Workspace 中可以有不同角色。Agent、Session、Environment、Vault、Memory Store、File、Model Card、Eval Run 等业务数据都带有 Workspace 边界，服务端会按当前租户上下文查询。</p>
+        </section>
+
+        <section id="quickstart">
+          <h2>2. 快速开始</h2>
+          <h3>2.1 普通用户首次使用</h3>
+          <ol><li>打开管理员提供的 OMA Console 地址。</li><li>使用管理员启用的账号登录；当前认证由 better-auth 提供，部署可启用邮箱/密码、OTP，以及已配置的 OIDC SSO。</li><li>在顶部 Workspace 切换器选择已有 Workspace，或创建新的 Workspace。</li><li>进入 Agents，创建一个 Agent；至少填写名称、模型和系统提示词。</li><li>创建 Session，选择 Agent、Environment 和可选资源，发送第一条任务。</li><li>在 Session 详情页查看实时事件、Agent 回复、工具调用、模型调用和输出文件。</li></ol>
+          <div class="callout"><strong>建议的第一个练习</strong>创建一个只读分析 Agent，挂载一个测试文件，在受控 Environment 中执行“总结文件并列出关键指标”，先熟悉 Session、事件流和输出下载，再接入外部资源。</div>
+          <h3>2.2 管理员首次部署检查</h3>
+          <table><thead><tr><th>检查项</th><th>目的</th><th>关注点</th></tr></thead><tbody>
+            <tr><td>认证密钥</td><td>保证 Cookie/session 可持续</td><td><code>BETTER_AUTH_SECRET</code> 生产环境必须稳定且保密。</td></tr>
+            <tr><td>公共地址</td><td>Cookie 与 OAuth 回调使用正确 origin</td><td>生产环境设置 <code>PUBLIC_BASE_URL</code>，不要依赖开发默认值。</td></tr>
+            <tr><td>数据库</td><td>保存用户、租户、资源和 Session 元数据</td><td>默认 SQLite；设置 <code>DATABASE_URL</code> 可切换 PostgreSQL。</td></tr>
+            <tr><td>模型凭据</td><td>让 Agent 能调用模型</td><td>优先为 Workspace 配置 Model Card；也可使用 <code>ANTHROPIC_API_KEY</code> 作为回退。</td></tr>
+            <tr><td>沙箱</td><td>隔离 Agent 的工具执行</td><td><code>subprocess</code> 适合可信开发；生产环境应评估 litebox、Daytona、E2B 或 BoxRun。</td></tr>
+            <tr><td>数据目录与备份</td><td>保护数据库、Memory、文件和输出</td><td>SQLite/本地文件需要单独纳入备份；多实例应使用 PostgreSQL 与共享对象存储。</td></tr>
+          </tbody></table>
+        </section>
+
+        <section id="workspace">
+          <h2>3. Workspace、Tenant 与权限</h2>
+          <p class="section-intro">Workspace 是用户在 Console 中看到的工作区；服务端将它作为 Tenant 实现。Workspace 不是一个 UI 标签，而是资源和请求隔离的根边界。</p>
+          <h3>3.1 用户与 Workspace 的关系</h3>
+          <table><thead><tr><th>概念</th><th>含义</th><th>典型关系</th></tr></thead><tbody>
+            <tr><td>User</td><td>登录身份</td><td>一个 User 可以加入多个 Workspace。</td></tr>
+            <tr><td>Workspace / Tenant</td><td>资源隔离域</td><td>一个 Workspace 可以有多个 User。</td></tr>
+            <tr><td>Membership</td><td>User 与 Workspace 的关联记录</td><td>同一 User 在不同 Workspace 可拥有不同 role。</td></tr>
+            <tr><td><code>tenant_id</code></td><td>服务端数据隔离键</td><td>通常与 Workspace ID 对应；调用 API 时必须在正确的 active tenant 上下文中。</td></tr>
+          </tbody></table>
+          <h3>3.2 角色</h3>
+          <table><thead><tr><th>角色</th><th>可以做什么</th><th>限制</th></tr></thead><tbody>
+            <tr><td><code>owner</code></td><td>管理 Workspace 成员，可授予或撤销 owner；管理 Workspace 内的资源。</td><td>不能删除最后一个 owner。</td></tr>
+            <tr><td><code>admin</code></td><td>添加、修改、移除普通成员；管理日常 Workspace 资源。</td><td>不能授予或撤销 owner。</td></tr>
+            <tr><td><code>member</code></td><td>使用被授予可见范围内的 Workspace 资源，创建和运行任务。</td><td>不能管理成员。</td></tr>
+          </tbody></table>
+          <div class="callout warn"><strong>重要的权限边界</strong>当前代码实现了 Workspace membership 与 role 检查，但角色并没有进一步拆成逐资源的 <code>can_read</code>、<code>can_create</code>、<code>can_update</code>、<code>can_delete</code> 权限矩阵。实际使用中应把 Workspace 视为主要资源边界，并谨慎授予 API Key。</div>
+          <h3>3.3 Console 与 API 入口</h3>
+          <ul><li>Workspace 列表：<span class="api">GET /v1/me/tenants</span></li><li>创建 Workspace：<span class="api">POST /v1/tenants</span></li><li>查看当前用户：<span class="api">GET /v1/me</span></li><li>查看成员：<span class="api">GET /v1/tenants/:tenantId/members</span></li><li>添加成员：<span class="api">POST /v1/tenants/:tenantId/members</span></li><li>修改角色：<span class="api">PATCH /v1/tenants/:tenantId/members/:userId</span></li><li>移除成员：<span class="api">DELETE /v1/tenants/:tenantId/members/:userId</span></li></ul>
+          <p>添加成员要求用户已存在于当前 OMA 实例。管理员可选用系统级配置 <code>OMA_ALLOWED_EMAIL_DOMAINS</code>，限制 OIDC 登录或加入 Workspace 时可使用的邮箱域名。SSO 登录成功但本地用户记录尚未同步时，仍可能显示“User account not found”。</p>
+        </section>
+
+        <section id="organization">
+          <h2>4. Organization Settings 与组织级默认值</h2>
+          <p class="section-intro">Organization Settings 是 Workspace 之上的组织级配置层，用来规定多个 Workspace 的默认模型、执行配置、允许使用的 Harness 和安全策略。它不是某一个 Workspace 的普通资源页面。</p>
+          <h3>4.1 Console 入口</h3>
+          <p>当前 Console 已注册以下页面，但它们不一定出现在左侧常规导航中：</p>
+          <ul><li>Organization Settings：<code>/organization</code></li><li>Organization Workspaces：<code>/organization/workspaces</code></li></ul>
+          <p>如果侧边栏没有显示入口，可以直接访问上述路径，或由管理员在内部导航中提供链接。页面会分别读取 <span class="api">GET /v1/oma/org/defaults</span> 和 <span class="api">GET /v1/oma/org/workspaces</span>。</p>
+          <h3>4.2 Organization Settings 展示内容</h3>
+          <table><thead><tr><th>设置</th><th>含义</th><th>对 Workspace 的影响</th></tr></thead><tbody>
+            <tr><td>Default model</td><td>组织默认 Model Card / model ID</td><td>Workspace 未配置自己的默认模型时可继承。</td></tr>
+            <tr><td>Execution profile</td><td>默认执行配置，可包含 sandbox worker、image strategy 和 environment config</td><td>Workspace 没有默认执行环境时可作为组织默认。</td></tr>
+            <tr><td>Allowed harnesses</td><td>组织允许使用的 Harness ID 列表</td><td>限制 Workspace 可选择的执行引擎范围。</td></tr>
+            <tr><td>Default harness</td><td>组织默认 Harness</td><td>Workspace/Agent 未显式指定时作为默认策略来源。</td></tr>
+            <tr><td>Allow BYOK</td><td>是否允许 Workspace 使用自带模型凭据</td><td>影响 Workspace 是否可以配置自己的 provider key。</td></tr>
+            <tr><td>Allow dedicated environment</td><td>是否允许使用专用执行环境</td><td>影响环境隔离和资源分配策略。</td></tr>
+            <tr><td>Networking policy</td><td>组织级网络策略 JSON</td><td>作为 Workspace 有效设置的策略来源。</td></tr>
+          </tbody></table>
+          <h3>4.3 Workspace 有效设置</h3>
+          <p>Workspace 可以通过 <span class="api">GET /v1/oma/org/effective-settings</span> 查看最终生效配置。返回内容会区分来源：</p>
+          <ul><li><code>workspace</code>：Workspace 自己配置了模型或执行环境，优先级更高。</li><li><code>org_default</code>：Workspace 没有自己的设置，继承 Organization 默认值。</li><li><code>org_policy</code>：Harness 允许列表、BYOK、专用环境和网络策略来自组织策略。</li><li><code>missing</code>：没有可用默认值，管理员需要补齐配置。</li></ul>
+          <p>如果组织配置了默认执行 profile，可通过 <span class="api">POST /v1/oma/org/apply-org-defaults</span> 将它物化为 Workspace 默认 Environment；该操作是否可用取决于当前部署是否提供对应的 application service。</p>
+          <h3>4.4 Organization Workspaces</h3>
+          <p>Organization Workspaces 页面展示组织下 Workspace 的名称、ID、创建时间、API Key 数量和 tags，并支持搜索、创建 Workspace，以及切换到指定 Workspace 管理其 API Keys。它与 Workspace Members 页面不同：</p>
+          <table><thead><tr><th>页面</th><th>管理对象</th><th>典型用途</th></tr></thead><tbody>
+            <tr><td>Workspace Members</td><td>当前 Workspace 的 User membership 和 role</td><td>邀请、改角色、移除成员。</td></tr>
+            <tr><td>Organization Workspaces</td><td>组织下多个 Workspace</td><td>创建、搜索 Workspace，查看 API Key 数量，切换管理上下文。</td></tr>
+            <tr><td>Organization Settings</td><td>组织级默认值与政策</td><td>统一治理模型、执行环境、Harness 和网络策略。</td></tr>
+          </tbody></table>
+        </section>
+
+        <section id="agents">
+          <h2>5. Agent、Harness 与 ACP Proxy</h2>
+          <p class="section-intro">Agent 是“如何工作”的可复用配置，不是一次执行。Harness 是 Agent 的执行引擎；ACP Proxy 是其中一种特殊执行方式，用于把 Agent loop 委派到已连接的本地 ACP runtime。</p>
+          <h3>5.1 Harness Catalog</h3>
+          <p>Console 的 <code>/harnesses</code> 页面是 Harness Catalog。它从 <span class="api">GET /v1/harnesses</span> 读取当前部署可用的 manifest，展示名称、状态、provider、版本、是否已安装/启用、能力支持程度、原生工具、兼容性和 OMA 工具列表。</p>
+          <table><thead><tr><th>Harness</th><th>定位</th><th>适合场景</th><th>状态</th></tr></thead><tbody>
+            <tr><td>Default OMA</td><td>标准 OMA agent loop</td><td>一般业务 Agent、工具调用、文件和 Memory 操作</td><td>stable</td></tr>
+            <tr><td>Strands</td><td>Strands Agents 支持的 Agent loop</td><td>需要使用 Strands 运行方式的 Agent</td><td>beta</td></tr>
+            <tr><td>Deep Agents</td><td>带规划、skills 和同步子 Agent 委派的高级 loop</td><td>复杂分析、分解任务、多步规划</td><td>beta</td></tr>
+            <tr><td>ACP Proxy</td><td>委派给已注册的本地 ACP runtime</td><td>希望在用户/团队机器上运行 Claude、Codex、OpenClaw 等 ACP 兼容 Agent</td><td>experimental</td></tr>
+          </tbody></table>
+          <p class="small">Catalog 中的 manifest 是当前部署实际注册结果；如果某个 harness 未安装、被禁用或处于不兼容状态，不应仅凭名称选择它。</p>
+          <h3>5.2 如何选择 Harness</h3>
+          <table><thead><tr><th>需求</th><th>优先选择</th><th>原因</th></tr></thead><tbody>
+            <tr><td>标准 OMA 工作流，运行在 OMA 管理的沙箱</td><td>Default OMA</td><td>兼容面最稳，适合作为默认起点。</td></tr>
+            <tr><td>要用 Strands 的执行模型</td><td>Strands</td><td>使用 Strands-backed loop；部署状态为 beta，应先做回归验证。</td></tr>
+            <tr><td>需要原生规划、<code>write_todos</code>、<code>task</code> 子 Agent</td><td>Deep Agents</td><td>Console 会显示其原生工具和工具配置；适合复杂任务。</td></tr>
+            <tr><td>需要调用本机已安装的 Claude/Codex/其他 ACP Agent</td><td>ACP Proxy</td><td>执行发生在 Local Runtime 绑定的机器，不走 OMA 隔离沙箱。</td></tr>
+          </tbody></table>
+          <div class="callout warn"><strong>选择原则</strong>先按“执行位置”选择，再按“Agent 能力”选择：需要 OMA 管理的隔离环境时选择 Default/Strands/Deep Agents；需要本机 ACP Agent 时选择 ACP Proxy。不要把 ACP Proxy 当成普通沙箱 harness。</div>
+          <h3>5.3 创建 Agent 时的 Harness 配置</h3>
+          <p>在 Agents 的创建/编辑对话框中选择 Harness。普通 harness 保存为 Agent 的 <code>_oma.harness</code> 和可选 <code>_oma.harness_config</code>；Deep Agents 可配置工具开关；ACP Proxy 还需要选择或填写 runtime binding，包括 <code>runtime_id</code> 和 <code>acp_agent_id</code>。如果 ACP Proxy 只填写了部分 binding，当前实现会回退到普通 OMA loop 语义，因此应确认两个字段都已配置。</p>
+          <h3>5.4 Agent 配置字段</h3>
+          <table><thead><tr><th>字段</th><th>用途</th><th>建议</th></tr></thead><tbody>
+            <tr><td>Name / Description</td><td>识别 Agent 和使用场景</td><td>用业务名称加用途命名，例如“供应商发票分析”。</td></tr>
+            <tr><td>Model</td><td>主模型标识</td><td>选择 Workspace 已配置的 Model Card 或受支持模型 ID。</td></tr>
+            <tr><td>System</td><td>角色、规则、输出格式</td><td>写清输入假设、禁止事项、失败处理和输出模板。</td></tr>
+            <tr><td>Tools</td><td>启用内置工具或自定义工具</td><td>遵循最小权限，只打开任务需要的工具。</td></tr>
+            <tr><td>MCP Servers</td><td>连接外部 MCP 服务</td><td>配合 Vault 注入凭据，不把 token 写进 prompt。</td></tr>
+            <tr><td>Skills</td><td>复用提示片段和技能文件</td><td>把稳定的领域规则做成可版本化 Skill。</td></tr>
+            <tr><td>Callable Agents</td><td>委派给其他 Agent</td><td>明确子 Agent 的职责、输入和结果契约。</td></tr>
+            <tr><td>Environment</td><td>通过 Session 选择执行环境</td><td>把依赖、网络和隔离策略放在 Environment，而不是散落在 Agent prompt。</td></tr>
+          </tbody></table>
+          <h3>5.5 Agent 生命周期</h3>
+          <p>创建 → 使用 → 更新（创建新版本）→ 归档。归档是软删除语义，避免历史 Session 失去其配置上下文。Console 提供 Agents 列表、创建、编辑、版本查看和归档；API 对应：</p>
+          <p><span class="api">POST /v1/agents</span> <span class="api">GET /v1/agents</span> <span class="api">GET /v1/agents/:id</span> <span class="api">PUT /v1/agents/:id</span> <span class="api">GET /v1/agents/:id/versions</span> <span class="api">POST /v1/agents/:id/archive</span></p>
+          <h3>5.6 Business Agent drafting 与 Agent Packages</h3>
+          <p>Business Agent 创建流程支持先用业务描述生成草稿，再由用户审阅 Agent 名称、模型、System Prompt、工具和资源绑定后保存。草稿是辅助生成结果，不应跳过人工审阅，尤其是涉及外部系统、凭据和通知的配置。</p>
+          <p>Agent Package 是可移植的多 Agent 配置包。它支持草稿、校验、不可变 revision、Skill 引用、managed files、MCP 配置和 callable-agent 关系；发布时会在当前 Workspace 创建正式 OMA Agents，并保留 package/revision 元数据。凭据要求只作为部署元数据保存，秘密不会复制到 Agent 记录。</p>
+          <p><span class="api">POST /v1/agent-packages</span> <span class="api">GET /v1/agent-packages</span> <span class="api">PUT /v1/agent-packages/:id</span> <span class="api">POST /v1/agent-packages/:id/validate</span> <span class="api">POST /v1/agent-packages/:id/publish</span></p>
+        </section>
+
+        <section id="sessions">
+          <h2>6. Session 与 Agent 执行</h2>
+          <p class="section-intro">Session 是一次可恢复的 Agent 对话和执行实例，拥有追加式事件日志。业务用户通常只需要创建 Session、发送消息、等待状态变化、查看输出。</p>
+          <h3>6.1 运行流程</h3>
+          <div class="flow"><div>创建 Session</div><div>发送 Message</div><div>Agent 调用模型/工具</div><div>实时 Events</div><div>Idle / Output</div></div>
+          <h3>6.2 创建 Session 时的 Environment 差异</h3>
+          <table><thead><tr><th>Agent 类型</th><th>创建 Session 时 Environment 字段</th><th>实际执行位置</th><th>说明</th></tr></thead><tbody>
+            <tr><td>Default / Strands / Deep Agents</td><td>需要选择 <code>environment_id</code>（或使用服务端默认 Environment）</td><td>OMA 管理的 sandbox / environment worker</td><td>Environment 决定依赖、网络和隔离；文件、Memory、Vault 等资源挂载到该执行环境。</td></tr>
+            <tr><td>ACP Proxy</td><td>Environment 选择器禁用，不提交 <code>environment_id</code></td><td>Agent 绑定的 Local Runtime 机器</td><td>Session 使用 Agent 的 <code>runtime_binding</code>，并显示 runtime 与 ACP agent；不使用隔离 sandbox environment。</td></tr>
+          </tbody></table>
+          <div class="callout"><strong>Console 中的提示</strong>选择 ACP Proxy Agent 后，New Session 对话框会显示“runs on local runtime”和 ACP agent 标识，Environment 输入框显示 disabled。选择其他 Agent 时，Environment 选择器恢复可用并按配置校验。</div>
+          <h3>6.3 常见状态</h3>
+          <table><thead><tr><th>状态</th><th>说明</th><th>用户动作</th></tr></thead><tbody>
+            <tr><td>idle</td><td>等待输入或本轮执行已完成</td><td>可以发送下一条消息。</td></tr>
+            <tr><td>running</td><td>正在执行模型调用或工具</td><td>等待、查看实时事件，必要时中断。</td></tr>
+            <tr><td>rescheduled</td><td>等待执行环境或沙箱准备</td><td>检查 Environment/Runtime 状态。</td></tr>
+            <tr><td>terminated</td><td>已显式结束或不可恢复失败</td><td>创建新 Session 或查看错误事件。</td></tr>
+          </tbody></table>
+          <h3>6.4 结果与审阅</h3>
+          <ul><li>Session 事件可通过 Console 实时查看或使用 SSE。</li><li>Trajectory 用于按时间顺序查看 Agent 消息、工具调用和工具结果。</li><li>模型调用详情可定位到具体 LLM call event。</li><li>Session 可挂载 File、GitHub Repository、Memory Store 等资源。</li><li>输出文件通过 Session outputs 入口读取和下载。</li></ul>
+          <p><span class="api">POST /v1/sessions</span> <span class="api">POST /v1/sessions/:id/messages</span> <span class="api">GET /v1/sessions/:id/events/stream</span> <span class="api">GET /v1/sessions/:id/trajectory</span> <span class="api">GET /v1/sessions/:id/outputs</span></p>
+        </section>
+
+        <section id="resources">
+          <h2>7. Resources 资源管理</h2>
+          <h3>7.1 Environment</h3>
+          <p>Environment 定义执行沙箱的依赖和网络策略，可配置 Python、npm、apt、cargo、gem、Go 包以及 networking 规则。创建后可供 Session 选择。内置环境可通过 bootstrap 入口初始化。</p>
+          <p><span class="api">POST /v1/environments</span> <span class="api">GET /v1/environments</span> <span class="api">GET /v1/environments/:id</span> <span class="api">POST /v1/environments/:id/archive</span></p>
+          <h3>7.2 Files</h3>
+          <p>Files 用于上传输入文件和保存可复用文件元数据；Session 可以把文件挂载到沙箱路径。生产环境需要同时备份数据库元数据和实际 blob 内容。</p>
+          <h3>7.3 Memory Stores</h3>
+          <p>Memory Store 是跨 Session 的持久记忆空间。Memory 使用路径组织内容，支持列表、读取、创建、更新、删除、版本查看、CAS 条件写入和历史版本 redact。Console 提供 Memory Stores 列表、详情、内容编辑和版本操作。</p>
+          <ul><li>建议路径：<code>/preferences/formatting.md</code>、<code>/projects/project-a/notes.md</code>。</li><li>使用 <code>precondition: not_exists</code> 防止首次创建覆盖现有内容。</li><li>使用 <code>content_sha256</code> 做并发写保护。</li><li>版本删除敏感内容后保留审计行；不能直接 redact 当前 live head。</li><li>通过 Session resources 挂载到 <code>/mnt/memory/&lt;store_name&gt;/</code>。</li></ul>
+          <h3>7.4 Credential Vaults</h3>
+          <p>Vault 保存 MCP OAuth、静态 Bearer 和 command secret 等凭据。设计目标是凭据不进入 Agent 沙箱，而由出站代理按 URL 或命令匹配后注入。Vault 与 Credential 都属于当前 Workspace。</p>
+          <p><span class="api">POST /v1/vaults</span> <span class="api">GET /v1/vaults</span> <span class="api">POST /v1/vaults/:id/credentials</span> <span class="api">POST /v1/vaults/:id/archive</span></p>
+          <div class="callout limit"><strong>安全要求</strong>不要把 API token、密码或 OAuth refresh token 放进 Agent system prompt、Skill 文件、Memory 或普通 File。应使用 Vault，并在测试完成后撤销不再需要的凭据。</div>
+          <h3>7.5 Skills 与 MCP</h3>
+          <p>Skills 是可复用的提示片段和文件，支持上传、列表、版本和删除；MCP 入口支持连接探测和凭据匹配。Skill 适合稳定领域知识，Memory 适合会随任务变化的持久信息，Vault 适合秘密。</p>
+          <h3>7.6 资源可见性与访问审核</h3>
+          <p>资源可以按当前访问策略设为创建者私有，或对 Workspace 可见。Console 提供 Workspace 资源访问清单，并优先标出需要审核的资源。获得许可的成员可以创建私有 Agent、Skill 和 Memory Store；owner 与 admin 负责 Workspace 级可见性和权限策略。</p>
+        </section>
+
+        <section id="models">
+          <h2>8. 模型、Model Card 与运行时</h2>
+          <h3>8.1 Model Card</h3>
+          <p>Model Card 将 provider、model ID、base URL 和 API key 绑定为 Workspace 级模型配置。Agent 通过模型标识引用它；服务端按当前 Workspace 解析并使用对应凭据。Console 支持创建、列表、编辑、删除、探测和查看 key 状态。</p>
+          <p><span class="api">POST /v1/model_cards</span> <span class="api">GET /v1/model_cards</span> <span class="api">POST /v1/model_cards/probe</span> <span class="api">POST /v1/model_cards/:id/probe</span></p>
+          <h3>8.2 模型解析优先级</h3>
+          <ol><li>Agent 指定的模型与当前 Workspace Model Card 匹配。</li><li>Workspace 默认 Model Card。</li><li>组织默认模型配置（如果部署启用）。</li><li>服务端的 <code>ANTHROPIC_API_KEY</code> 回退配置。</li></ol>
+          <div class="callout warn"><strong>生产建议</strong>把每个业务 Workspace 的模型凭据放进 Model Card，而不是让所有 Workspace 共用全局回退 key。这样更易轮换、审计和未来按 Workspace 统计使用量。</div>
+          <h3>8.3 Local Runtimes、ACP Bridge 与 Sandboxes</h3>
+          <p>这一节包含两条不同的执行路径，容易混淆：</p>
+          <table><thead><tr><th>组件</th><th>作用</th><th>对应 Harness / Session</th></tr></thead><tbody>
+            <tr><td>Local Runtime / OMA Bridge</td><td>把用户或团队机器上的 ACP-compatible Agent 注册到 OMA，并提供本地执行通道。</td><td>ACP Proxy Agent；Session 在 runtime 绑定的机器执行。</td></tr>
+            <tr><td>Sandbox Worker</td><td>在独立 Linux 节点领取 Environment work，创建/管理 OpenShell sandbox，并回报状态、结果和心跳。</td><td>Default / Strands / Deep Agents 等 sandbox-backed Session。</td></tr>
+            <tr><td>Embedded worker</td><td>由 main-node 进程内运行的执行 worker。</td><td>适合单体或较简单部署；不需要额外 sandbox-worker 进程。</td></tr>
+            <tr><td>Sandboxes Console</td><td>展示当前沙箱生命周期和 worker 观测信息。</td><td>用于运维观察，不是创建 ACP runtime 的入口。</td></tr>
+          </tbody></table>
+          <h4>OMA Bridge setup（ACP Proxy 路径）</h4>
+          <ol><li>在要运行本地 Agent 的机器上执行 <code>npx @openma/cli@beta bridge setup</code>。</li><li>按 OAuth/配对流程登录，CLI 将凭据写入 <code>~/.oma/bridge/</code>；可安装后台 daemon。</li><li>daemon 扫描机器 <code>$PATH</code> 中的 ACP-compatible Agent，并向 OMA 上报 runtime 和 ACP agent。</li><li>在 Console 的 Local Runtimes 页面确认 heartbeat，再创建绑定该 runtime 的 ACP Proxy Agent。</li></ol>
+          <p class="small">常见 ACP Agent 包括 claude-acp、codex-acp、openclaw、hermes 等；具体可用列表以 daemon 当前扫描和 ACP registry 结果为准。需要调试时可使用 <code>OMA_BRIDGE_DEBUG_ACP=1</code>，On-Prem runtime 模式可使用 <code>OMA_BRIDGE_ONPREM_RUNTIME=1</code>。</p>
+          <h4>Sandbox Worker（隔离沙箱路径）</h4>
+          <ol><li>在 OMA 中创建或选择 Environment。</li><li>通过 <span class="api">POST /v1/environments/:environmentId/worker_keys</span> 为该 Environment mint worker key。</li><li>在 Linux sandbox 节点部署 <code>apps/sandbox-worker</code>，设置 <code>OMA_BASE_URL</code>、<code>OMA_ENVIRONMENT_ID</code>、<code>OMA_ENVIRONMENT_KEY</code>、<code>OMA_WORKER_NAME</code>。</li><li>设置 runner/provider，例如 <code>OMA_WORKER_RUNNER=openshell</code>、<code>SANDBOX_PROVIDER=openshell</code>，并配置 image、policy 和 gateway。</li><li>启动 worker；它会 poll work、ack、heartbeat、report result/failure。Console 的 Environment Detail 页面可查看 worker key 和启动提示。</li></ol>
+          <pre>OMA_BASE_URL=http://oma-control.internal:8787
+OMA_ENVIRONMENT_ID=env_xxx
+OMA_ENVIRONMENT_KEY=oma_env_xxx
+OMA_WORKER_NAME=sandbox-linux-01
+OMA_WORKER_RUNNER=openshell
+SANDBOX_PROVIDER=openshell
+OPENSHELL_GATEWAY=local
+OPENSHELL_IMAGE=ant-worker:1.9.2</pre>
+          <h4>main-node 执行模式</h4>
+          <p><code>OMA_EXECUTION_MODE</code> 控制执行 ownership：<code>embedded</code> 由 main-node 内置 worker 处理，<code>external</code> 由外部 sandbox-worker fleet 处理，<code>legacy</code> 用于兼容旧路径。部署 external 模式时，main-node 与 sandbox-worker 必须使用同一 OMA 地址、正确的 Environment worker key 和可达的工作接口。</p>
+          <p><span class="api">GET /v1/runtimes</span> <span class="api">POST /v1/runtimes/enroll</span> <span class="api">POST /v1/runtimes/:id/heartbeat</span> <span class="api">GET /v1/sandboxes</span> <span class="api">GET /v1/environments/:id/workers</span></p>
+        </section>
+
+        <section id="evals">
+          <h2>9. 评估、集成与高级能力</h2>
+          <h3>9.1 Eval Runs</h3>
+          <p>Eval Run 是一次<strong>可重复的 Agent 评估批次</strong>：它使用指定的 Agent 和 Environment，执行一组任务，收集完整 Session 轨迹，并根据 Reward 规则判断任务是否通过。它适合做 Agent 回归测试、模型/提示词变更验收、工具调用验证，以及上线前的稳定性检查。</p>
+          <div class="callout"><strong>一句话理解：</strong>Session 是一次实际对话；Eval Run 是一批自动化测试；Task 是其中一个测试场景；Trial 是该场景的一次独立执行。</div>
+          <h4>9.1.1 核心对象</h4>
+          <table><thead><tr><th>对象</th><th>含义</th><th>示例</th></tr></thead><tbody>
+            <tr><td>Eval Run</td><td>一次评估批次，绑定一个 Agent、一个 Environment 和多个 Task。</td><td>验证客服 Agent 的 4 个能力。</td></tr>
+            <tr><td>Task</td><td>一个测试场景，包含任务 ID、一个或多个 messages、可选 setup、timeout 和 Reward。</td><td>要求 Agent 使用 bash 输出固定标记。</td></tr>
+            <tr><td>Trial</td><td>一个 Task 的一次独立运行，拥有独立 Session、事件流和 trajectory。</td><td>同一个 Task 执行 3 次以观察稳定性。</td></tr>
+            <tr><td>Trajectory</td><td>Trial 完成后保存的完整评估轨迹，包含消息、思考/工具事件、状态、模型调用和 token usage。</td><td>用于复盘、评分和后续对比。</td></tr>
+          </tbody></table>
+          <p><strong>Task 与 Trial 的区别：</strong>Task 是“要测什么”，Trial 是“实际测了一次”。配置 <code>trials: 3</code> 后，一个 Task 会创建 3 个独立 Session，最终可看到通过次数，例如 <code>2/3</code>。</p>
+          <h4>9.1.2 如何使用</h4>
+          <p>On-Premise 当前建议通过 API 或仓库中的 smoke-test 脚本创建 Eval Run；Console 主要用于列表、状态监控、Task/Trial 展开和 trajectory/reward 查看。</p>
+          <pre>POST /v1/evals/runs
+x-api-key: &lt;workspace-api-key&gt;
+content-type: application/json
+
+{
+  "agent_id": "agent_xxx",
+  "environment_id": "env_xxx",
+  "tasks": [{
+    "id": "bash-check",
+    "messages": ["Use bash to run: printf OMA_OK"],
+    "trials": 1,
+    "timeout_ms": 3600000,
+    "reward": {
+      "type": "verifiable",
+      "scorer": "bashOutputMarker",
+      "opts": { "marker": "OMA_OK" }
+    }
+  }]
+}</pre>
+          <p>创建成功后返回 <code>run_id</code>。使用 <span class="api">GET /v1/evals/runs/:id</span> 轮询，直到 Run 进入 <code>completed</code> 或 <code>failed</code>。仓库提供快捷脚本：</p>
+          <pre>$env:OMA_API_URL = "http://localhost:8787"
+$env:OMA_API_KEY = "oma_..."
+$env:OMA_AGENT_ID = "agent_..."
+$env:OMA_ENV_ID = "env_..."
+node scripts/eval-smoke/run.mjs all</pre>
+          <p>API key 自动决定当前 Workspace/Tenant，不需要额外传 <code>tenant_id</code>。Environment 必须处于 <code>ready</code> 状态，并且 embedded worker 或 external sandbox-worker 必须正常运行。</p>
+          <h4>9.1.3 Reward 与通过判断</h4>
+          <p>Reward 是对一个 Trial 的结果评分，通常归一化为 <code>0</code> 到 <code>1</code>。它不是模型 token 费用，也不是 Agent 自己声称的结果，而是平台根据 trajectory 执行 verifier/scorer 得出的结果。</p>
+          <table><thead><tr><th>Reward 类型</th><th>用途</th><th>典型配置</th></tr></thead><tbody>
+            <tr><td>无 Reward</td><td>只验证 Session 是否成功完成。</td><td>Trial 正常 idle 且无错误即通过。</td></tr>
+            <tr><td><code>verifiable</code></td><td>使用内置评分器检查消息、工具或 bash 输出。</td><td><code>agentMessageContains</code>、<code>bashOutputMarker</code>、<code>fileWritten</code>、<code>toolUsed</code>、<code>idleNoError</code>。</td></tr>
+            <tr><td><code>script</code></td><td>在 Trial sandbox 中执行验证脚本，退出码为 0 代表通过。</td><td>运行测试脚本或检查生成文件。</td></tr>
+            <tr><td><code>composite</code></td><td>组合多个 verifier，并按权重计算总分。</td><td>同时要求 bash 成功和输出包含目标标记。</td></tr>
+          </tbody></table>
+          <p>Console 中的 Pass rate 是通过 Trial 数除以 Trial 总数；Reward breakdown 则显示 trajectory 中更细的评分原因。Reward 为 0 不一定表示 Session 崩溃，也可能表示 Agent 执行完成但没有满足评分条件。</p>
+          <h4>9.1.4 On-Premise 后台执行原理</h4>
+          <div class="flow"><div>POST Eval Run</div><div>main-node scheduler</div><div>创建独立 Session</div><div>embedded / external worker</div><div>收集 trajectory</div><div>verifier / reward</div><div>完成 Run</div></div>
+          <ol><li>API 将 Run 和 Task/Trial 初始状态写入主数据库。</li><li>main-node 的 Eval Runner 定期扫描 <code>pending/running</code> Run。</li><li>每个 Trial 创建独立 Session，发送 Task 的第一条 message；多条 messages 会按顺序发送。</li><li>Session 通过当前配置的 embedded 或 external execution plane 执行 Harness。</li><li>Session 进入 <code>idle</code> 后，Runner 读取 events 和 full-status，构建 trajectory。</li><li>Verifier 根据 Reward 配置评分，更新 Trial、Task 和 Run 状态，并保存 trajectory。</li></ol>
+          <div class="callout warn"><strong>关于耗时：</strong>默认 <code>EVAL_TICK_CRON="* * * * *"</code> 每分钟推进一次。模型可能很快完成，但 Runner 可能需要等待下一次 tick 才能发现 idle、发送下一条 message 或完成评分。因此单消息 Task 出现约 1 至 2 分钟、多消息 Task 多一个 tick 的等待是当前轮询架构的预期行为，不等同于模型性能问题。测试环境可配置 <code>EVAL_TICK_CRON="*/10 * * * * *"</code>，生产环境需要根据数据库和 worker 负载权衡。</div>
+          <h4>9.1.5 状态与排障</h4>
+          <table><thead><tr><th>现象</th><th>优先检查</th></tr></thead><tbody>
+            <tr><td>Run 长时间 pending</td><td>main-node scheduler 是否启动，<code>EVAL_TICK_CRON</code> 是否有效。</td></tr>
+            <tr><td>Trial 长时间 running</td><td>Session 是否 idle；检查 embedded worker/external worker 日志和 Environment 状态。</td></tr>
+            <tr><td>Session 已完成但 Eval 未完成</td><td>确认 main-node 版本包含 Eval adapter 的 <code>/status</code>、<code>/events</code> 和 <code>/full-status</code> 适配。</td></tr>
+            <tr><td>Session 完成但 Reward 为 0</td><td>查看 Reward breakdown、trajectory 和 verifier 的匹配条件，而不是只看 Session 状态。</td></tr>
+          </tbody></table>
+          <p><span class="api">POST /v1/evals/runs</span> <span class="api">GET /v1/evals/runs</span> <span class="api">GET /v1/evals/runs/:id</span> <span class="api">DELETE /v1/evals/runs/:id</span></p>
+          <h4>9.1.6 Evaluation Plans、review gates 与 Temporal</h4>
+          <p>Evaluation Plans 用于组织可复用的 cases、references 和 revisions。已发布 Plan 可以通过 Temporal 执行，并展示实时 case 进度、保留后续审阅所需的 evidence。Review gate 可以在必要证据或 reviewer 决策完成前阻止 promotion。Ask OMA 生成的 cases 属于草稿，发布前应检查 prompt、fixture 和 assertion。</p>
+          <p>Workflow Run 只有进入终态后才能删除，删除会同时执行级联清理。如果运行仍在进行，应先取消并等待终态，再重试删除。</p>
+          <h3>9.2 企业集成</h3>
+          <p>当前 Console 导航提供 Linear、GitHub、Slack 集成入口。集成通常包含 OAuth 授权、安装/绑定、发布或 webhook 回调，实际可用性取决于管理员配置的 provider 应用、回调地址和密钥。</p>
+          <h3>9.3 Usage、Cost 与 Notifications</h3>
+          <p>Workspace 管理员可以打开 <code>/usage</code> 查看 token 用量和预估成本。报表支持时间范围、小时/日/月粒度，以及按 API Key、account、app、Workspace 和 model 分组或筛选。成本依据当前模型价格表估算，不是 provider 的正式账单。</p>
+          <p><code>/notification-settings</code> 用于管理 SMTP 以及 Slack/Teams webhook 目标。Scheduled Agent Run 可以按成功、失败或每次运行发送通知，携带执行结果并记录投递历史。<code>send_notification</code> Agent 工具默认关闭且需要确认；只应为 Agent 版本绑定已批准的通知目标。</p>
+          <p><span class="api">GET /v1/oma/analytics/usage_report</span> <span class="api">GET /v1/oma/analytics/cost_report</span> <span class="api">GET /v1/notification-settings/smtp</span> <span class="api">GET /v1/notification-settings/endpoints</span></p>
+          <h3>9.4 Dreams 与异步任务</h3>
+          <div class="callout warn"><strong>Console 可见性</strong>当前 Console 没有 Dreams 页面；Dreams 是 On-Premise 服务端提供的 API/SDK 能力。</div>
+          <p><strong>Dream 是什么：</strong>一个后台运行的 Memory 整理任务。它读取一个已有 Memory Store，可选参考若干 Session，然后调用模型合并重复记忆、清理过时内容、提炼反复出现的规律，并生成一个新的 Curated Memory Store。它通常不会直接覆盖原始 Memory Store。</p>
+          <div class="flow"><div>原始 Memory Store</div><div>可选 Session 上下文</div><div>模型整理</div><div>新的 Memory Store</div><div>后续 Agent 使用</div></div>
+          <p><strong>生命周期：</strong><code>pending → running → completed / failed / canceled</code>。创建接口会很快返回，客户端需要查询 Dream 状态；完成后从 <code>outputs[].memory_store_id</code> 取得整理结果。</p>
+          <p><strong>输入要求：</strong>必须提供一个 Memory Store；Session 可选且必须属于当前 Workspace。当前实现主要向 curator 提供 Session ID 和标题，不是完整对话 transcript，因此 Dream 当前主要依赖 Memory Store 内容。</p>
+          <p><strong>当前限制：</strong>支持的模型为 <code>claude-opus-4-7</code> 和 <code>claude-sonnet-4-6</code>；需要 Dreams beta header；当前没有 Console usage/dashboard，也不是通用任务编排器。</p>
+          <p><span class="api">POST /v1/dreams</span> <span class="api">GET /v1/dreams</span> <span class="api">GET /v1/dreams/:id</span> <span class="api">POST /v1/dreams/:id/cancel</span> <span class="api">POST /v1/dreams/:id/archive</span></p>
+        </section>
+
+        <section id="api">
+          <h2>10. API、认证与 CLI</h2>
+          <h3>10.1 认证方式</h3>
+          <table><thead><tr><th>方式</th><th>适用场景</th><th>说明</th></tr></thead><tbody>
+            <tr><td>Cookie session</td><td>Console、浏览器操作</td><td>由 better-auth 管理，适合交互式登录。</td></tr>
+            <tr><td>API Key</td><td>服务到服务、脚本、SDK</td><td>按 Workspace mint/list/revoke；只显示一次明文 key。</td></tr>
+            <tr><td>CLI token</td><td>OMA CLI 登录</td><td>通过 <code>/v1/me/cli-tokens</code> 创建，复用 API Key 存储。</td></tr>
+            <tr><td>OIDC SSO</td><td>外部身份提供方</td><td>需要配置 discovery URL、client credentials 和 redirect URI。可通过 <code>OMA_ALLOWED_EMAIL_DOMAINS</code> 设置系统级邮箱域名白名单。</td></tr>
+          </tbody></table>
+          <h3>10.2 最小 API 示例</h3>
+          <pre># 列出当前用户的 Workspace
+curl "$OMA_BASE_URL/v1/me/tenants" \
+  -H "Cookie: $OMA_SESSION_COOKIE"
+
+# 创建 API Key（返回明文只应安全保存一次）
+curl -X POST "$OMA_BASE_URL/v1/api_keys" \
+  -H "Authorization: Bearer $OMA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"analysis-automation"}'
+
+# 创建 Agent
+curl -X POST "$OMA_BASE_URL/v1/agents" \
+  -H "x-api-key: $OMA_API_KEY" \
+  -H "x-active-tenant: $WORKSPACE_ID" \
+  -H "Content-Type: application/json" \
+  -d '{"name":"File Analyst","model":"claude-sonnet-4-6","system":"分析输入文件并输出结论。"}'
+
+# 读取 SSE 事件流
+curl -N "$OMA_BASE_URL/v1/sessions/$SESSION_ID/events/stream" \
+  -H "x-api-key: $OMA_API_KEY" \
+  -H "x-active-tenant: $WORKSPACE_ID"</pre>
+          <h3>10.3 API 使用原则</h3>
+          <ul><li>所有自动化请求固定携带正确的 Workspace 上下文，不要依赖用户上一次 Console 选择。</li><li>不同业务域使用不同 API Key，方便撤销、轮换和定位调用方。</li><li>API Key 不应提交到 Git、写入日志或放进 Memory。</li><li>长任务优先使用 SSE 或轮询 Session 状态，不要高频重复创建 Session。</li></ul>
+        </section>
+
+        <section id="operations">
+          <h2>11. On-Premise 部署与运维</h2>
+          <h3>11.1 存储模式</h3>
+          <table><thead><tr><th>组件</th><th>默认/可选实现</th><th>运维建议</th></tr></thead><tbody>
+            <tr><td>主数据库</td><td>SQLite；设置 <code>DATABASE_URL</code> 后使用 PostgreSQL</td><td>单实例可用 SQLite；多实例优先 PostgreSQL。</td></tr>
+            <tr><td>认证数据库</td><td>better-auth 使用独立 auth 数据库路径或 PG</td><td>与主数据一起纳入备份，并保持 secret 稳定。</td></tr>
+            <tr><td>Memory blob</td><td>本地文件系统；也支持 S3-compatible</td><td>多实例共享目录或配置 <code>MEMORY_S3_*</code>，并启用轮询同步。</td></tr>
+            <tr><td>Files / outputs</td><td>本地或 S3-compatible blob</td><td>数据库备份不等于文件内容备份，需分别保护。</td></tr>
+            <tr><td>Sandbox</td><td>subprocess、litebox、daytona、e2b、boxrun</td><td>根据代码可信度、隔离需求和基础设施选择。</td></tr>
+          </tbody></table>
+          <h3>11.2 关键环境变量</h3>
+          <pre>DATABASE_URL=postgres://oma:password@postgres:5432/oma
+BETTER_AUTH_SECRET=&lt;stable-random-secret&gt;
+PUBLIC_BASE_URL=https://oma.internal.example
+ANTHROPIC_API_KEY=&lt;fallback-only-key&gt;
+ANTHROPIC_BASE_URL=https://api.anthropic.com
+SANDBOX_PROVIDER=litebox
+MEMORY_BLOB_DIR=./data/memory-blobs
+# 多实例/对象存储模式时按实际环境设置：
+# MEMORY_S3_ENDPOINT, MEMORY_S3_BUCKET, MEMORY_S3_ACCESS_KEY,
+# MEMORY_S3_SECRET_KEY, MEMORY_S3_REGION, MEMORY_S3_POLL_INTERVAL_SEC</pre>
+          <p class="small">以上变量名来自 On-Premise 运行代码与部署文档；实际生产值、密钥和回调地址应由平台管理员通过安全配置系统注入。</p>
+          <h3>11.3 备份与恢复</h3>
+          <ol><li>SQLite：停止服务后备份数据库文件、认证数据库、Memory blob、Files/output 目录。</li><li>PostgreSQL：使用一致性快照或 <code>pg_dump</code>，同时备份对象存储。</li><li>恢复后验证：登录、Workspace 列表、Agent、Session 历史、Memory 内容和 Vault 元数据。</li><li>定期进行恢复演练，不要只验证备份文件“存在”。</li></ol>
+        </section>
+
+        <section id="limits">
+          <h2>12. 当前版本边界与未覆盖能力</h2>
+          <p class="section-intro">以下内容不是使用错误，而是当前 On-Premise 代码的产品边界。将它们写在手册里，是为了避免用户把未提供的能力误认为已经存在。</p>
+          <table><thead><tr><th>能力</th><th>当前状态</th><th>影响</th></tr></thead><tbody>
+            <tr><td>Workspace / Tenant 隔离</td><td>已实现</td><td>资源按 tenant_id 查询，Console 支持 Workspace 切换。</td></tr>
+            <tr><td>Membership / Role</td><td>已实现</td><td>owner/admin/member 管理页和 API 可用；可通过 <code>OMA_ALLOWED_EMAIL_DOMAINS</code> 配置系统级邮箱域名白名单。</td></tr>
+            <tr><td>细粒度 Permission matrix</td><td>未完整实现</td><td>没有面向管理员的逐资源 read/create/update/delete 策略编辑器。</td></tr>
+            <tr><td>Workspace 级 usage dashboard</td><td>已实现（预估）</td><td>Console 提供 Usage &amp; Cost 报表，支持 token 维度和按模型估算成本。</td></tr>
+            <tr><td>Token/cost 计量</td><td>已实现 usage ledger 与预估成本</td><td>报表用于运营估算，不是 provider 正式账单或财务结算系统。</td></tr>
+            <tr><td>Quota / Budget / Alert</td><td>未见完整 Workspace 管理面</td><td>已有 usage 报表，但硬性 quota 和预算告警仍需通过 provider、网关或外部监控实现。</td></tr>
+            <tr><td>完整审计后台</td><td>部分能力存在于事件/版本/运行日志</td><td>尚未等同于统一的成员、资源、凭据和权限审计中心。</td></tr>
+          </tbody></table>
+          <div class="callout limit"><strong>如何理解“已实现”</strong>资源带 tenant_id 并不自动等于完成了企业级权限治理。生产推广前，应额外定义 Workspace owner、业务域负责人、API Key 生命周期、模型成本归属和离职用户处理流程。</div>
+        </section>
+
+        <section id="troubleshooting">
+          <h2>13. 常见问题与排障</h2>
+          <h3>登录后没有 Workspace</h3><p>确认用户已创建或被加入 Workspace；检查浏览器 Cookie、<code>PUBLIC_BASE_URL</code> 和认证数据库是否指向预期实例。</p>
+          <h3>添加成员显示 User account not found</h3><p>确认目标用户已登录并存在于当前 On-Premise 实例的用户目录中。如果设置了 <code>OMA_ALLOWED_EMAIL_DOMAINS</code>，还要确认邮箱域名在系统级白名单中。SSO 身份在 IdP 中存在，不代表本地用户表已经有记录。</p>
+          <h3>Agent 无法调用模型</h3><p>检查 Agent 的 model ID 是否与 Workspace Model Card 匹配；使用 Model Card probe；确认 base URL、provider、key 和网络出口。若没有 Model Card，再检查服务端回退 <code>ANTHROPIC_API_KEY</code>。</p>
+          <h3>Session 长时间 rescheduled</h3><p>检查 Environment 是否 ready、Runtime 是否 enrolled/heartbeat 正常、worker 是否能够领取 work，以及 <code>SANDBOX_PROVIDER</code> 所需的外部配置。</p>
+          <h3>Memory 在 Console 看得到但沙箱不同步</h3><p>本地模式检查 <code>MEMORY_BLOB_DIR</code>、文件权限和 watcher；S3 模式检查所有连接参数、bucket 前缀和 poll interval，并确认多实例使用共享对象存储。</p>
+          <h3>实时事件没有刷新</h3><p>检查 SSE 连接、反向代理是否允许长连接、API Key 与 active tenant 是否正确；PostgreSQL 多实例场景检查事件 fanout 依赖。</p>
+          <h3>安全事件处理</h3><p>API Key 或 Vault 凭据泄露时立即 revoke/rotate，检查相关 Session、模型调用和集成日志，再按企业事件响应流程处理。不要只删除 Console 中的显示名称。</p>
+        </section>
+
+        <footer>
+          <p><strong>文档说明：</strong>本文件根据当前仓库中 <code>apps/main-node</code>、<code>apps/console</code>、<code>packages/http-routes</code>、On-Premise 部署文档及相关存储/执行代码整理。部署时请以实际版本、环境变量和管理员配置为最终准则。</p>
+          <p>推荐阅读顺序：普通用户看第 2、5、6、7 节；分析师看第 6、7、8、9 节；开发者看第 3、6、10 节；管理员看第 4、8、11、12、13 节。</p>
+        </footer>
+      </main>
+    </div>
+  </div>
+<script>
+  (() => {
+    const panels = [...document.querySelectorAll('[data-doc-language]')];
+    const buttons = [...document.querySelectorAll('[data-language]')];
+    const navLinks = [...document.querySelectorAll('nav a[href^="#"]')];
+    const staticText = new Map([
+      [document.querySelector('.side-note'), 'On-Premise User Guide\nFor operators, developers and business users'],
+      [document.querySelector('.hero .eyebrow'), 'On-Premise Edition · User Guide'],
+      [document.querySelector('.hero h1'), 'Build a governed Agent platform with OMA'],
+      [document.querySelector('.hero .lead'), 'This guide covers the current On-Premise OMA implementation: sign-in, Workspace setup, Agent configuration, Session execution, resource mounting, sandbox operations and result inspection.'],
+    ]);
+    const originalStaticText = new Map([...staticText.keys()].map((node) => [node, node?.textContent]));
+    const meta = document.querySelector('.hero .meta');
+    const originalMeta = meta?.innerHTML;
+    navLinks.forEach((link) => { link.dataset.zhText = link.textContent; });
+    const englishNav = ['1. Scope and positioning', '2. Quick start', '3. Workspace, Tenant and permissions', '4. Organization Settings and organization defaults', '5. Agent, Harness and ACP Proxy', '6. Session and Agent execution', '7. Resources management', '8. Models, Model Cards and runtimes', '9. Evaluations, integrations and advanced capabilities', '10. API, authentication and CLI', '11. On-Premise deployment and operations', '12. Current version boundaries and unsupported capabilities', '13. Troubleshooting'];
+    const setLanguage = (lang) => {
+      panels.forEach((panel) => { panel.hidden = panel.dataset.docLanguage !== lang; });
+      buttons.forEach((button) => button.classList.toggle('active', button.dataset.language === lang));
+      staticText.forEach((english, node) => { if (node) node.textContent = lang === 'en' ? english : originalStaticText.get(node); });
+      if (meta) meta.innerHTML = lang === 'en' ? '<span class="badge">apps/main-node</span><span class="badge">Console + /v1 API</span><span>Documentation baseline: current codebase · 2026-08-09</span>' : originalMeta;
+      navLinks.forEach((link, index) => { if (lang === 'en' && englishNav[index]) link.textContent = englishNav[index]; else if (lang === 'zh') link.textContent = link.dataset.zhText || link.textContent; });
+      navLinks.forEach((link) => {
+        const base = link.dataset.baseHref || link.getAttribute('href').replace(/-en$/, '');
+        link.dataset.baseHref = base;
+        const candidate = lang === 'en' ? `${base.slice(1)}-en` : base.slice(1);
+        link.setAttribute('href', document.getElementById(candidate) ? `#${candidate}` : base);
+      });
+      document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+      document.title = lang === 'en' ? 'OMA On-Premise User Guide' : 'OMA On-Premise 功能使用说明书';
+      localStorage.setItem('oma-doc-language', lang);
+    };
+    buttons.forEach((button) => button.addEventListener('click', () => setLanguage(button.dataset.language)));
+    setLanguage(localStorage.getItem('oma-doc-language') || 'en');
+  })();
+</script>
+</body>
+</html>
